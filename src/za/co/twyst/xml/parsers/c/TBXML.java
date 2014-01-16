@@ -1,7 +1,5 @@
 package za.co.twyst.xml.parsers.c;
 
-import android.util.Log;
-
 public class TBXML
        { // CONSTANTS
          

@@ -3,8 +3,6 @@ package za.co.twyst.xml.parsers.java;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import za.co.twyst.xml.db.Route;
 import za.co.twyst.xml.db.Section;
 import za.co.twyst.xml.parsers.Parser;
