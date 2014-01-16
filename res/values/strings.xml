@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+ <string name="app_name">TBXML</string>
+ <string name="jdk">JDK</string>
+ <string name="java">TBXML/Java</string>
+ <string name="c">TBXML/native</string>
+ <string name="min">Min</string>
+ <string name="max">Max</string>
+ <string name="average">Ave</string>
+ <string name="runs">Runs</string>
+ <string name="label_iterations">Loops:</string>
+ <string name="label_jdk">JDK:</string>
+ <string name="label_java">Java:</string>
+ <string name="label_c">Native:</string>
+</resources>

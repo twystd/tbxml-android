@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<routes>
+
+ <!-- FAR RIGHT -->
+
+ <section id="10005000" name="Far Right" order="5">
+  <route bolts="4B,A" grade="18" id="1" name="Pixilated" stars="***">
+   <description>
+    Takes the vague slightly right-slanting break about 3m left of the large chimney filled with chockstones.
+   </description>
+   <first-ascent by="Peter Speed,Tony Seebregts" date="2013-03-21" />
+  </route>    
+ </section>
+</routes>
