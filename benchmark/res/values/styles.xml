@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+ <style name="AppBaseTheme" parent="android:Theme.Light">
+ </style>
+
+ <style name="AppTheme" parent="AppBaseTheme">
+ </style>
+    
+ <style name="Row">
+  <item name="android:orientation">horizontal</item>
+  <item name="android:layout_width">fill_parent</item> 
+  <item name="android:layout_height">wrap_content</item>
+  <item name="android:layout_margin">1dp</item>
+  <item name="android:textColor">#ff202020</item>
+ </style>
+    
+ <style name="Cell">
+  <item name="android:layout_width">0dp</item> 
+  <item name="android:background">#ffffffff</item>
+  <item name="android:layout_height">wrap_content</item>
+  <item name="android:layout_weight">1</item>
+  <item name="android:layout_margin">1dp</item>
+  <item name="android:padding">1dp</item>
+  <item name="android:gravity">center</item>
+  <item name="android:textColor">#ff000000</item>
+  <item name="android:textSize">12sp</item>
+ </style>
+    
+ <style name="Label">
+  <item name="android:layout_width">wrap_content</item> 
+  <item name="android:layout_height">wrap_content</item>
+  <item name="android:textColor">#ff202020</item>
+  <item name="android:textSize">12sp</item>
+  </style>
+ 
+ <style name="ButtonX">
+  <item name="android:background">@drawable/button</item>
+  <item name="android:layout_width">match_parent</item>
+  <item name="android:layout_height">wrap_content</item>
+  <item name="android:layout_marginBottom">8dp</item>
+  <item name="android:layout_centerHorizontal">true</item>
+  <item name="android:padding">4dp</item>
+  <item name="android:textColor">#ff404040</item> 
+ </style>
+  
+</resources>

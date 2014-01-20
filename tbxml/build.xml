@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="TBXML" default="build" basedir=".">
+
+<property name="ndk.dir" value="${user.home}/Development/tools/adt-bundle-mac-x86_64-20130522/android-ndk-r9c" />
+	
+<target name="build">
+ <exec executable="${ndk.dir}/ndk-build" dir="${basedir}/jni" failonerror="true"/>
+</target>
+
+ <target name="clean">
+  <exec executable="${ndk.dir}/ndk-build" dir="${basedir}/jni" failonerror="true" >
+   <arg value="clean"/>
+  </exec>
+ </target>
+	
+</project>
