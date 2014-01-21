@@ -45,7 +45,9 @@ public class TBXML
          public void parse(String xml) throws TBXMLException
                 { jniFree(document);
                   
-                  document = jniParse(xml.getBytes());
+                  if ((document = jniParse(xml.getBytes())) == 0)
+                     { throw new TBXMLException("Invalid document handle");
+                     }
                 }
 
          public void release()
