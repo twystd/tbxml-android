@@ -46,9 +46,9 @@ public class NDK implements Parser
                                         { String tag = tbxml.elementName(child);
                                       
                                           if ("section".equals(tag))
-                                             { String      id      = tbxml.valueOfAttributeForElement("id",child);
-                                               String      name    = tbxml.valueOfAttributeForElement("name",child);
-                                               String      order   = tbxml.valueOfAttributeForElement("order",child);
+                                             { String      id      = tbxml.valueOfAttributeNamed("id",   child);
+                                               String      name    = tbxml.valueOfAttributeNamed("name", child);
+                                               String      order   = tbxml.valueOfAttributeNamed("order",child);
                                                List<Route> routes  = parse(tbxml,child);
                                                Section     section = new Section(id,name,order,routes);
 
@@ -79,26 +79,26 @@ public class NDK implements Parser
                    
                    while (child != 0)
                          { if ("route".equals(tbxml.elementName(child)))
-                              { String id          = tbxml.valueOfAttributeForElement("id",   child);
-                                String name        = tbxml.valueOfAttributeForElement("name", child);
-                                String grade       = tbxml.valueOfAttributeForElement("grade",child);
-                                String stars       = tbxml.valueOfAttributeForElement("stars",child);
-                                String bolts       = tbxml.valueOfAttributeForElement("bolts",child);
-                                String order       = tbxml.valueOfAttributeForElement("order",child);
-                                String description = tbxml.textForElement(tbxml.childElement("description",child));
+                              { String id          = tbxml.valueOfAttributeNamed("id",   child);
+                                String name        = tbxml.valueOfAttributeNamed("name", child);
+                                String grade       = tbxml.valueOfAttributeNamed("grade",child);
+                                String stars       = tbxml.valueOfAttributeNamed("stars",child);
+                                String bolts       = tbxml.valueOfAttributeNamed("bolts",child);
+                                String order       = tbxml.valueOfAttributeNamed("order",child);
+                                String description = tbxml.textForElement(tbxml.childElementNamed("description",child));
                                 Route  route       = new Route(id,name,grade,stars,bolts,order,description);
                                 long   optional;
 
-                                if ((optional = tbxml.childElement("first-ascent",child)) != 0)
-                                   { String by   = tbxml.valueOfAttributeForElement("by",  optional);
-                                     String date = tbxml.valueOfAttributeForElement("date",optional);
+                                if ((optional = tbxml.childElementNamed("first-ascent",child)) != 0)
+                                   { String by   = tbxml.valueOfAttributeNamed("by",  optional);
+                                     String date = tbxml.valueOfAttributeNamed("date",optional);
                                 
                                      route.firstAscent = new Route.FirstAscent(by,date);
                                    }
 
-                                if ((optional = tbxml.childElement("bolted",child)) != 0)
-                                   { String by   = tbxml.valueOfAttributeForElement("by",  optional);
-                                     String date = tbxml.valueOfAttributeForElement("date",optional);
+                                if ((optional = tbxml.childElementNamed("bolted",child)) != 0)
+                                   { String by   = tbxml.valueOfAttributeNamed("by",  optional);
+                                     String date = tbxml.valueOfAttributeNamed("date",optional);
                                 
                                      route.bolted = new Route.Bolted(by,date);
                                    }

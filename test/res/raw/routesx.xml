@@ -10,5 +10,13 @@
    </description>
    <first-ascent by="Peter Speed,Tony Seebregts" date="2013-03-21" />
   </route>    
+  
+  <routex id="Q" />
+  <route  id="W" />
+  <routex id="E" />
+  <route  id="R" />
+  <routex id="T" />
+  <route  id="Y" />
+  
  </section>
 </routes>

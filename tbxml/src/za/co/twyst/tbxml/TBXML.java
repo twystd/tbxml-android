@@ -24,15 +24,16 @@ public class TBXML
          
          // NATIVE METHODS
          
-         private native long   jniParse       (byte[] xml);
-         private native void   jniFree        (long document);
-         private native long   jniRootElement (long document);
-         private native long   jniFirstChild  (long document,long element);
-         private native long   jniNextSibling (long document,long element);
-         private native long   jniChildElement(long document,long element,String tag);
-         private native String jniElementName (long document,long element);
-         private native String jniValueOfAttributeForElement(long document,long element,String attribute);
-         private native String jniTextForElement(long document,long element);
+         private native long   jniParse                (byte[] xml);
+         private native void   jniFree                 (long document);
+         private native long   jniRootElement          (long document);
+         private native long   jniFirstChild           (long document,long element);
+         private native long   jniChildElementNamed    (long document,long element,String tag);
+         private native long   jniNextSibling          (long document,long element);
+         private native long   jniNextSiblingNamed     (long document,long element,String tag);
+         private native String jniElementName          (long document,long element);
+         private native String jniValueOfAttributeNamed(long document,long element,String attribute);
+         private native String jniTextForElement       (long document,long element);
          
          // CONSTRUCTORS
 
@@ -62,13 +63,27 @@ public class TBXML
                 { return jniFirstChild(document,element);
                 }
 
+         public long childElementNamed(String name,long element)
+                { return jniChildElementNamed(document,element,name);
+                }
+
          public long nextSibling(long element) 
                 { return jniNextSibling(document,element);
                 }
 
-         public long childElement(String tag,long element) 
-                { return jniChildElement(document,element,tag);
+         public long nextSiblingNamed(String tag,long element)
+                { return jniNextSiblingNamed(document,element,tag);
                 }
+//       TBXMLElement * xmlElement = aXMLElement->nextSibling;
+//       const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
+//       while (xmlElement) {
+//           if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
+//               return xmlElement;
+//           }
+//           xmlElement = xmlElement->nextSibling;
+//       }
+//       return nil;
+//   }
 
          public String elementName(long element) 
                 { return jniElementName(document,element);
@@ -84,48 +99,15 @@ public class TBXML
 //             return [NSString stringWithCString:&aXMLAttribute->value[0] encoding:NSUTF8StringEncoding];
 //         }
          
-       public String textForElement(long element) 
-              { return jniTextForElement(document,element);
-              }
+         public String valueOfAttributeNamed(String attribute,long element) 
+                { return jniValueOfAttributeNamed(document,element,attribute);
+                }
 
-//       + (NSString*) valueOfAttributeNamed:(NSString *)aName forElement:(TBXMLElement*)aXMLElement {
-//           const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
-//           NSString * value = nil;
-//           TBXMLAttribute * attribute = aXMLElement->firstAttribute;
-//           while (attribute) {
-//               if (strlen(attribute->name) == strlen(name) && memcmp(attribute->name,name,strlen(name)) == 0) {
-//                   value = [NSString stringWithCString:&attribute->value[0] encoding:NSUTF8StringEncoding];
-//                   break;
-//               }
-//               attribute = attribute->next;
-//           }
-//           return value;
-//       }
+         public String textForElement(long element) 
+                { return jniTextForElement(document,element);
+                }
 
-//       + (TBXMLElement*) childElementNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement{
-//           
-//           TBXMLElement * xmlElement = aParentXMLElement->firstChild;
-//           const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
-//           while (xmlElement) {
-//               if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
-//                   return xmlElement;
-//               }
-//               xmlElement = xmlElement->nextSibling;
-//           }
-//           return nil;
-//       }
 
-//       + (TBXMLElement*) nextSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement{
-//           TBXMLElement * xmlElement = aXMLElement->nextSibling;
-//           const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
-//           while (xmlElement) {
-//               if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
-//                   return xmlElement;
-//               }
-//               xmlElement = xmlElement->nextSibling;
-//           }
-//           return nil;
-//       }
 
 //       + (void)iterateElementsForQuery:(NSString *)query fromElement:(TBXMLElement *)anElement withBlock:(TBXMLIterateBlock)iterateBlock {
 //           
@@ -186,16 +168,5 @@ public class TBXML
 //               attribute = attribute->next;
 //           }
 //       }
-       
-       public String valueOfAttributeForElement(String attribute,long element) 
-              { return jniValueOfAttributeForElement(document,element,attribute);
-              }
-
-       
-         // IMPLEMENTATION
-         
-         //TODO: \0 values are written at a bad place, spaces often appear after the texts. 
-         //private void decodeBytes() throws TBXMLException
-         //        { jniDecodeBytes(this);
-         //        }
        }
+

@@ -19,6 +19,8 @@ void            decodeBytes           (TBXMLDocument *);
 TBXMLElement   *nextAvailableElement  (TBXMLDocument *);
 TBXMLAttribute *nextAvailableAttribute(TBXMLDocument *);
 
+// __android_log_print(ANDROID_LOG_INFO,"TBXML","ATTRIBUTE: %s::%s",name,value);
+
 /** JNIParse
  *
  */
@@ -94,6 +96,35 @@ jlong Java_za_co_twyst_tbxml_TBXML_jniFirstChild(JNIEnv* env,jobject object,jlon
       return (jlong) (uintptr_t) NULL;
 }
 
+/** JNIChildElementNamed
+ *
+ */
+jlong Java_za_co_twyst_tbxml_TBXML_jniChildElementNamed(JNIEnv* env,jobject object,jlong document,jlong element,jstring tag) {
+      TBXMLDocument *doc  = (TBXMLDocument *) (uintptr_t) document;
+      TBXMLElement  *node = (TBXMLElement  *) (uintptr_t) element;
+      const char    *name = (*env)->GetStringUTFChars(env,tag,0);
+      TBXMLElement  *child = NULL;
+
+      if (doc) {
+    	  if (node) {
+    		  TBXMLElement *_node = node->firstChild;
+
+    		  while(_node) {
+    			  if (strcmp(_node->name,name) == 0) {
+    				  child = _node;
+    				  break;
+    			  }
+
+    			  _node = _node->nextSibling;
+    		  }
+    	  }
+      }
+
+      (*env)->ReleaseStringUTFChars(env,tag,name);
+
+      return (jlong) (uintptr_t) child;
+}
+
 /** JNINextSibling
  *
  */
@@ -110,18 +141,18 @@ jlong Java_za_co_twyst_tbxml_TBXML_jniNextSibling(JNIEnv* env,jobject object,jlo
       return (jlong) (uintptr_t) NULL;
 }
 
-/** JNIChildElement
+/** JNINextSiblingNamed
  *
  */
-jlong Java_za_co_twyst_tbxml_TBXML_jniChildElement(JNIEnv* env,jobject object,jlong document,jlong element,jstring tag) {
-      TBXMLDocument *doc  = (TBXMLDocument *) (uintptr_t) document;
-      TBXMLElement  *node = (TBXMLElement  *) (uintptr_t) element;
-      const char    *name = (*env)->GetStringUTFChars(env,tag,0);
+jlong Java_za_co_twyst_tbxml_TBXML_jniNextSiblingNamed(JNIEnv* env,jobject object,jlong document,jlong element,jstring tag) {
+      TBXMLDocument *doc   = (TBXMLDocument *) (uintptr_t) document;
+      TBXMLElement  *node  = (TBXMLElement  *) (uintptr_t) element;
+      const char    *name  = (*env)->GetStringUTFChars(env,tag,0);
       TBXMLElement  *child = NULL;
 
       if (doc) {
     	  if (node) {
-    		  TBXMLElement *_node = node->firstChild;
+    		  TBXMLElement *_node = node->nextSibling;
 
     		  while(_node) {
     			  if (strcmp(_node->name,name) == 0) {
@@ -155,10 +186,10 @@ jstring Java_za_co_twyst_tbxml_TBXML_jniElementName(JNIEnv* env,jobject object,j
       return (jstring) NULL;
 }
 
-/** JNIValueOfAttributeForElement
+/** JNIValueOfAttributeNamed
  *
  */
-jstring Java_za_co_twyst_tbxml_TBXML_jniValueOfAttributeForElement(JNIEnv* env,jobject object,jlong document,jlong element,jstring attribute) {
+jstring Java_za_co_twyst_tbxml_TBXML_jniValueOfAttributeNamed(JNIEnv* env,jobject object,jlong document,jlong element,jstring attribute) {
       const TBXMLDocument *doc   = (TBXMLDocument *) (uintptr_t) document;
       const TBXMLElement  *node  = (TBXMLElement  *) (uintptr_t) element;
       const char          *name  = (*env)->GetStringUTFChars(env,attribute,0);
@@ -277,7 +308,7 @@ void decodeBytes(TBXMLDocument *document)
 
 				char *elementNameStart = elementStart+1;
 
-//				__android_log_print(ANDROID_LOG_INFO,"TBXML","ELEMENT: %s",elementNameStart);
+				// __android_log_print(ANDROID_LOG_INFO,"TBXML","ELEMENT: %s",elementNameStart);
 
 				// ... skip <? and <! tags
 
