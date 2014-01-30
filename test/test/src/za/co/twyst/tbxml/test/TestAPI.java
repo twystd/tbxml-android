@@ -139,7 +139,22 @@ public class TestAPI extends AndroidTestCase
                   
                   assertEquals("Invalid 'description' text",DESCRIPTION,tbxml.textForElement(description));
                 }
-         
+
+         public void testListElementsForQuery() throws Exception
+                { String xml = read(R.raw.routesx);
+           
+                   tbxml.parse(xml);
+           
+                   long   root   = tbxml.rootXMLElement();         assertTrue("Invalid 'root' element",        root        != 0);
+                   long[] routes = tbxml.listElementsForQuery("section.route",root);
+                   
+                   assertNotNull("Invalid element list",routes);
+                   assertEquals ("Invalid element list size",3,routes.length);
+                   assertEquals ("Invalid element '123'",123,routes[0]);
+                   assertEquals ("Invalid element '345'",345,routes[1]);
+                   assertEquals ("Invalid element '567'",567,routes[2]);
+                }
+
 	     // UTILITY FUNCTIONS
 
 	     private String read(int rid) throws Exception

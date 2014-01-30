@@ -34,6 +34,7 @@ public class TBXML
          private native String jniElementName          (long document,long element);
          private native String jniValueOfAttributeNamed(long document,long element,String attribute);
          private native String jniTextForElement       (long document,long element);
+         private native long[] jniListElementsForQuery (long document,long element,String query);
          
          // CONSTRUCTORS
 
@@ -74,16 +75,6 @@ public class TBXML
          public long nextSiblingNamed(String tag,long element)
                 { return jniNextSiblingNamed(document,element,tag);
                 }
-//       TBXMLElement * xmlElement = aXMLElement->nextSibling;
-//       const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
-//       while (xmlElement) {
-//           if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
-//               return xmlElement;
-//           }
-//           xmlElement = xmlElement->nextSibling;
-//       }
-//       return nil;
-//   }
 
          public String elementName(long element) 
                 { return jniElementName(document,element);
@@ -107,7 +98,9 @@ public class TBXML
                 { return jniTextForElement(document,element);
                 }
 
-
+         public long[] listElementsForQuery(String query,long element)
+                { return jniListElementsForQuery(document,element,query);
+                }
 
 //       + (void)iterateElementsForQuery:(NSString *)query fromElement:(TBXMLElement *)anElement withBlock:(TBXMLIterateBlock)iterateBlock {
 //           

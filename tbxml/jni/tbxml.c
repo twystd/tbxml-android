@@ -233,6 +233,115 @@ jstring Java_za_co_twyst_tbxml_TBXML_jniTextForElement(JNIEnv* env,jobject objec
 	  return (*env)->NewStringUTF(env,"");
 }
 
+
+/** JNIListElementsForQuery
+ *
+ */
+jlongArray Java_za_co_twyst_tbxml_TBXML_jniListElementsForQuery(JNIEnv* env,jobject object,jlong document,jlong element,jstring query) {
+      TBXMLDocument *doc     = (TBXMLDocument *) (uintptr_t) document;
+      TBXMLElement  *node    = (TBXMLElement  *) (uintptr_t) element;
+      const char    *str     = (*env)->GetStringUTFChars(env,query,0);
+      jlongArray     result  = (*env)->NewLongArray(env,3);
+      TBXMLElement  *current = node;
+
+      if (doc) {
+    	  if (node) {
+    		   char *token = strtok(str,".");
+
+    		   while (token) {
+    			  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY %s",token);
+
+    			  if (strcmp(token,"*") == 0) {
+    				  current = current->firstChild;
+    			  } else {
+                      // ... 'childElementNamed'
+
+    				  TBXMLElement *_node = current->firstChild;
+    				  TBXMLElement *child = NULL;
+
+    	    		  while(_node) {
+    	    			  if (strcmp(_node->name,token) == 0) {
+    	    				  child = _node;
+    	    				  break;
+    	    			  }
+
+    	    			  _node = _node->nextSibling;
+    	    		  }
+
+    	    		  current = child;
+    			  }
+
+                  if (!current) {
+    		         break;
+                  }
+
+    		      token = strtok (NULL,".");
+    		   }
+
+    		 // ... enumerate matching nodes
+
+    	     TBXMLElement *root  = current;
+    		 int           count = 0;
+
+    		 while(current) {
+    			 count++;
+    			 current = current->nextSibling;
+    		 }
+
+   			  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY:MATCH  %d",count);
+    	  }
+      }
+
+      int   i;
+      jlong fill[3];
+
+      fill[0] = 123;
+      fill[1] = 345;
+      fill[2] = 567;
+
+      (*env)->ReleaseStringUTFChars(env,query,str);
+      (*env)->SetLongArrayRegion   (env,result,0,3,fill);
+
+	  return result;
+}
+
+//for (NSInteger i=0; i < components.count; ++i) {
+//    NSString *iTagName = [components objectAtIndex:i];
+//
+//    if ([iTagName isEqualToString:@"*"]) {
+//        currTBXMLElement = currTBXMLElement->firstChild;
+//
+//        // different behavior depending on if this is the end of the query or midstream
+//        if (i < (components.count - 1)) {
+//            // midstream
+//            do {
+//                NSString *restOfQuery = [[components subarrayWithRange:NSMakeRange(i + 1, components.count - i - 1)] componentsJoinedByString:@"."];
+//                [TBXML iterateElementsForQuery:restOfQuery fromElement:currTBXMLElement withBlock:iterateBlock];
+//            } while ((currTBXMLElement = currTBXMLElement->nextSibling));
+//
+//        }
+//    } else {
+//        currTBXMLElement = [TBXML childElementNamed:iTagName parentElement:currTBXMLElement];
+//    }
+//
+//    if (!currTBXMLElement) {
+//        break;
+//    }
+//}
+//
+//if (currTBXMLElement) {
+//    // enumerate
+//    NSString *childTagName = [components lastObject];
+//
+//    if ([childTagName isEqualToString:@"*"]) {
+//        childTagName = nil;
+//    }
+//
+//    do {
+//        iterateBlock(currTBXMLElement);
+//    } while (childTagName ? (currTBXMLElement = [TBXML nextSiblingNamed:childTagName searchFromElement:currTBXMLElement]) : (currTBXMLElement = currTBXMLElement->nextSibling));
+
+
 // *** INTERNAL ***
 
 void decodeBytes(TBXMLDocument *document)
