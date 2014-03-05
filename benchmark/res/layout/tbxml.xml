@@ -64,30 +64,56 @@
             android:textColor="#ff404040" 
             android:textSize="13sp" />
   
-  <Button style="@style/ButtonX"
-          android:id="@+id/jdk"
-          android:layout_below="@+id/info"
-          android:text="@string/jdk" 
-          android:onClick="onJDK" />
+  <LinearLayout android:id="@+id/jdk"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/info">
+   <Button style="@style/ButtonX" 
+           android:id="@+id/xpath"
+           android:layout_width="0dp" 
+           android:layout_weight="1" 
+           android:layout_marginRight="4dp"
+           android:text="@string/xpath" 
+           android:onClick="onXPath" />
+   <Button style="@style/ButtonX" 
+           android:id="@+id/sax"   
+           android:layout_width="0dp" 
+           android:layout_weight="1" 
+           android:layout_marginLeft="4dp"
+           android:text="@string/sax" 
+           android:onClick="onSax" />
+  </LinearLayout>
+
+  <LinearLayout android:id="@+id/tbxml"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/jdk">
+  
+   <Button style="@style/ButtonX"
+           android:id="@+id/java"
+           android:layout_width="0dp" 
+           android:layout_weight="1" 
+           android:layout_marginRight="4dp"
+           android:text="@string/java" 
+           android:onClick="onJAVA" />
  
-  <Button style="@style/ButtonX"
-          android:id="@+id/java"
-          android:layout_below="@+id/jdk"
-          android:text="@string/java" 
-          android:onClick="onJAVA" />
- 
-  <Button style="@style/ButtonX"
-          android:id="@+id/c"
-          android:layout_below="@+id/java"
-          android:text="@string/c" 
-          android:onClick="onC"/>
+   <Button style="@style/ButtonX"
+           android:id="@+id/c"
+           android:layout_width="0dp" 
+           android:layout_weight="1" 
+           android:layout_marginLeft="4dp"
+           android:text="@string/c" 
+           android:onClick="onC"/>
+  </LinearLayout>
  
   <RelativeLayout android:id="@+id/grid"
                   android:background="@drawable/grid"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="12dp"
-                  android:layout_below="@+id/c"
+                  android:layout_below="@+id/tbxml"
                   android:layout_centerHorizontal="true"
                   android:padding="3dp">
 
@@ -102,18 +128,28 @@
    </LinearLayout>
 
    <LinearLayout style="@style/Row" 
-                 android:id="@+id/jdk_row" 
+                 android:id="@+id/xpath_row" 
                  android:layout_below="@+id/headings" 
                  android:layout_alignLeft="@+id/headings">
-    <TextView style="@style/Cell" android:id="@+id/jdk_min"  />
-    <TextView style="@style/Cell" android:id="@+id/jdk_ave"  />
-    <TextView style="@style/Cell" android:id="@+id/jdk_max"  />
-    <TextView style="@style/Cell" android:id="@+id/jdk_runs" />
+    <TextView style="@style/Cell" android:id="@+id/xpath_min"  />
+    <TextView style="@style/Cell" android:id="@+id/xpath_ave"  />
+    <TextView style="@style/Cell" android:id="@+id/xpath_max"  />
+    <TextView style="@style/Cell" android:id="@+id/xpath_runs" />
    </LinearLayout>
 
    <LinearLayout style="@style/Row" 
+                 android:id="@+id/sax_row" 
+                 android:layout_below="@+id/xpath_row" 
+                 android:layout_alignLeft="@+id/headings">
+    <TextView style="@style/Cell" android:id="@+id/sax_min"  />
+    <TextView style="@style/Cell" android:id="@+id/sax_ave"  />
+    <TextView style="@style/Cell" android:id="@+id/sax_max"  />
+    <TextView style="@style/Cell" android:id="@+id/sax_runs" />
+   </LinearLayout>
+   
+   <LinearLayout style="@style/Row" 
                  android:id="@+id/java_row" 
-                 android:layout_below="@+id/jdk_row" 
+                 android:layout_below="@+id/sax_row" 
                  android:layout_alignLeft="@+id/headings">
     <TextView style="@style/Cell" android:id="@+id/java_min"  />
     <TextView style="@style/Cell" android:id="@+id/java_ave"  />
@@ -133,10 +169,16 @@
   
    <TextView style="@style/Label"
              android:id="@+id/jdk_label" 
-             android:layout_alignBottom="@+id/jdk_row" 
+             android:layout_alignBottom="@+id/xpath_row" 
              android:layout_alignParentLeft="true" 
-             android:text="@string/label_jdk" /> 
+             android:text="@string/label_xpath" /> 
 
+   <TextView style="@style/Label"
+             android:id="@+id/sax_label" 
+             android:layout_alignBottom="@+id/sax_row" 
+             android:layout_alignLeft="@+id/jdk_label" 
+             android:text="@string/label_sax" /> 
+   
    <TextView style="@style/Label"
              android:id="@+id/java_label" 
              android:layout_alignBottom="@+id/java_row" 

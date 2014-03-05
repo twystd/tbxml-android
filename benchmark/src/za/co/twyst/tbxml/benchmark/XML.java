@@ -20,6 +20,7 @@ import android.os.Bundle;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
 import za.co.twyst.tbxml.benchmark.parsers.java.JAVA;
 import za.co.twyst.tbxml.benchmark.parsers.jdk.JDK;
+import za.co.twyst.tbxml.benchmark.parsers.jdk.SAX;
 import za.co.twyst.tbxml.benchmark.parsers.ndk.NDK;
 
 public class XML extends Activity
@@ -33,15 +34,21 @@ public class XML extends Activity
 	     private TextView    info;
          private EditText    iterations;
          private TextView    size;
-	     private Button      jdk;
+	     private Button      xpath;
+	     private Button      sax;
 	     private Button      java;
 	     private Button      c;
 	     private ProgressBar windmill;
 
-	     private TextView   jdk_min;
-         private TextView   jdk_ave;
-         private TextView   jdk_max;
-         private TextView   jdk_runs;
+	     private TextView   xpath_min;
+         private TextView   xpath_ave;
+         private TextView   xpath_max;
+         private TextView   xpath_runs;
+
+	     private TextView   sax_min;
+         private TextView   sax_ave;
+         private TextView   sax_max;
+         private TextView   sax_runs;
 
          private TextView   java_min;
          private TextView   java_ave;
@@ -54,9 +61,10 @@ public class XML extends Activity
          private TextView   c_runs;
 
 	     private String     xml;
-	     private List<Long> jdkx  = new ArrayList<Long>();
-         private List<Long> javax = new ArrayList<Long>();
-         private List<Long> cx    = new ArrayList<Long>();
+	     private List<Long> xpathx = new ArrayList<Long>();
+	     private List<Long> saxx   = new ArrayList<Long>();
+         private List<Long> javax  = new ArrayList<Long>();
+         private List<Long> cx     = new ArrayList<Long>();
 	     
 	     // CLASS METHODS
 	     
@@ -81,15 +89,21 @@ public class XML extends Activity
                   iterations = (EditText) findViewById(R.id.iterations);
                   size       = (TextView) findViewById(R.id.size);
 
-                  jdk       = (Button)      findViewById(R.id.jdk);
+                  xpath     = (Button)      findViewById(R.id.xpath);
+                  sax       = (Button)      findViewById(R.id.sax);
                   java      = (Button)      findViewById(R.id.java);
                   c         = (Button)      findViewById(R.id.c);
                   windmill  = (ProgressBar) findViewById(R.id.windmill);
 
-                  jdk_min   = (TextView) findViewById(R.id.jdk_min);
-                  jdk_ave   = (TextView) findViewById(R.id.jdk_ave);
-                  jdk_max   = (TextView) findViewById(R.id.jdk_max);
-                  jdk_runs  = (TextView) findViewById(R.id.jdk_runs);
+                  xpath_min  = (TextView) findViewById(R.id.xpath_min);
+                  xpath_ave  = (TextView) findViewById(R.id.xpath_ave);
+                  xpath_max  = (TextView) findViewById(R.id.xpath_max);
+                  xpath_runs = (TextView) findViewById(R.id.xpath_runs);
+
+                  sax_min    = (TextView) findViewById(R.id.sax_min);
+                  sax_ave    = (TextView) findViewById(R.id.sax_ave);
+                  sax_max    = (TextView) findViewById(R.id.sax_max);
+                  sax_runs   = (TextView) findViewById(R.id.sax_runs);
 
                   java_min  = (TextView) findViewById(R.id.java_min);
                   java_ave  = (TextView) findViewById(R.id.java_ave);
@@ -125,7 +139,7 @@ public class XML extends Activity
 
                   // ... clear measurement arrays
                   
-                  jdkx.clear ();
+                  xpathx.clear ();
                   javax.clear();
                   cx.clear   ();
                   
@@ -137,14 +151,25 @@ public class XML extends Activity
 
          // INSTANCE METHODS
          
-         public void onJDK(View v)
-                { new ParseTask("JDK",
-                                jdkx,
-                                jdk_min,
-                                jdk_ave,
-                                jdk_max,
-                                jdk_runs,
+         public void onXPath(View v)
+                { new ParseTask("XPath",
+                                xpathx,
+                                xpath_min,
+                                xpath_ave,
+                                xpath_max,
+                                xpath_runs,
                                 new JDK(xml),
+                                loops()).execute();
+                }
+         
+         public void onSax(View v)
+                { new ParseTask("Sax",
+                                saxx,
+                                sax_min,
+                                sax_ave,
+                                sax_max,
+                                sax_runs,
+                                new SAX(xml),
                                 loops()).execute();
                 }
 
@@ -235,7 +260,8 @@ public class XML extends Activity
         	       
         	       @Override
         	       protected void onPreExecute() 
-        	                 { jdk.setEnabled       (false);
+        	                 { xpath.setEnabled     (false);
+        	                   sax.setEnabled       (false);
         	                   java.setEnabled      (false);
         	                   c.setEnabled         (false);
         	                   iterations.setEnabled(false);
@@ -247,7 +273,8 @@ public class XML extends Activity
        			   protected void onPostExecute(Long result) 
         	                 { windmill.setVisibility(View.GONE);
 
-        	                   jdk.setEnabled       (true);
+        	                   xpath.setEnabled     (true);
+        	                   sax.setEnabled       (true);
                                java.setEnabled      (true);
                                c.setEnabled         (true);
                                iterations.setEnabled(true);
