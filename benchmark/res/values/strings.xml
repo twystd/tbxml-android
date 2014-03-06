@@ -4,7 +4,7 @@
  <string name="app_name">TBXML</string>
  <string name="java">TBXML/Java</string>
  <string name="xpath">XPath</string>
- <string name="sax">Sax</string>
+ <string name="sax">SAX</string>
  <string name="c">TBXML/native</string>
  <string name="min">Min</string>
  <string name="max">Max</string>
@@ -12,7 +12,7 @@
  <string name="runs">Runs</string>
  <string name="label_iterations">Loops:</string>
  <string name="label_xpath">XPath:</string>
- <string name="label_sax">Sax:</string>
+ <string name="label_sax">SAX:</string>
  <string name="label_java">Java:</string>
  <string name="label_c">Native:</string>
 </resources>

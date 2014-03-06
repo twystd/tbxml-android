@@ -20,4 +20,12 @@ public class Section
                   this.order  = order;
                   this.routes = routes;
                 }
+
+         // INSTANCE METHODS
+         
+		public void add(Route route)
+		       { if (route != null)
+		            { routes.add(route);
+		            }
+		       }
        }

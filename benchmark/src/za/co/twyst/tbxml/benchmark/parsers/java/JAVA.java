@@ -3,6 +3,8 @@ package za.co.twyst.tbxml.benchmark.parsers.java;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import za.co.twyst.tbxml.benchmark.db.Route;
 import za.co.twyst.tbxml.benchmark.db.Section;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
@@ -11,7 +13,6 @@ import za.co.twyst.tbxml.benchmark.parsers.java.TBXML.TBXMLElement;
 public class JAVA implements Parser 
        { // CONSTANTS
     
-         @SuppressWarnings("unused")
 		 private static final String TAG = JAVA.class.getSimpleName();
     
          // INSTANCE VARIABLES
@@ -51,9 +52,9 @@ public class JAVA implements Parser
 
                               }
 
-//                      for (Section section: sections)
-//                          { Log.d("TRACE",String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
-//                          }
+                        for (Section section: sections)
+                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
+                            }
                       }
 	             
                   return System.currentTimeMillis() - start;

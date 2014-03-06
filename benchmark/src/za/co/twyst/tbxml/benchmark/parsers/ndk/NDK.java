@@ -3,6 +3,8 @@ package za.co.twyst.tbxml.benchmark.parsers.ndk;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import za.co.twyst.tbxml.benchmark.db.Route;
 import za.co.twyst.tbxml.benchmark.db.Section;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
@@ -11,7 +13,6 @@ import za.co.twyst.tbxml.TBXML;
 public class NDK implements Parser 
        { // CONSTANTS
     
-		 @SuppressWarnings("unused")
          private static final String TAG = NDK.class.getSimpleName();
     
          // INSTANCE VARIABLES
@@ -53,8 +54,6 @@ public class NDK implements Parser
                                                Section     section = new Section(id,name,order,routes);
 
                                                sections.add(section);
-                                               
-//                                             Log.w(TAG,"SECTION [id:" + id + "][name:" + name + "][order:" + order + "]");
                                              }
 
                                           child = tbxml.nextSibling(child);
@@ -65,9 +64,11 @@ public class NDK implements Parser
                            { tbxml.release();
                            }
                         
-//                      for (Section section: sections)
-//                          { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
-//                          }
+                      // ... validate
+                        
+                      for (Section section: sections)
+                          { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
+                          }
                       }
 	             
                   return System.currentTimeMillis() - start;

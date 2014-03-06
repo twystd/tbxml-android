@@ -12,6 +12,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import android.util.Log;
+
 import za.co.twyst.tbxml.benchmark.db.Route;
 import za.co.twyst.tbxml.benchmark.db.Section;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
@@ -19,7 +21,6 @@ import za.co.twyst.tbxml.benchmark.parsers.Parser;
 public class JDK implements Parser 
        { // CONSTANTS
     
-         @SuppressWarnings("unused")
 		 private static final String TAG = JDK.class.getSimpleName();
     
          // INSTANCE VARIABLES
@@ -57,9 +58,9 @@ public class JDK implements Parser
                               sections.add(section);
                             }
 
-//                      for (Section section: sections)
-//                          { Log.d("TRACE",String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
-//                          }
+                        for (Section section: sections)
+                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
+                            }
                       }
 	             
                   return System.currentTimeMillis() - start;

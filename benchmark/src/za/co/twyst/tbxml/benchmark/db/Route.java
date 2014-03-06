@@ -11,7 +11,7 @@ public class Route
          public final String stars;
          public final String bolts;
          public final String order;
-         public final String description;
+         public       String description;
 
          public FirstAscent firstAscent;
          public Bolted      bolted;
@@ -27,6 +27,8 @@ public class Route
                   this.order       = order;
                   this.description = description;
                 }
+         
+         // INSTANCE METHODS
          
          // INNER CLASSES
 
