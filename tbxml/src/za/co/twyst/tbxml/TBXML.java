@@ -24,17 +24,20 @@ public class TBXML
          
          // NATIVE METHODS
          
-         private native long   jniParse                (byte[] xml);
-         private native void   jniFree                 (long document);
-         private native long   jniRootElement          (long document);
-         private native long   jniFirstChild           (long document,long element);
-         private native long   jniChildElementNamed    (long document,long element,String tag);
-         private native long   jniNextSibling          (long document,long element);
-         private native long   jniNextSiblingNamed     (long document,long element,String tag);
-         private native String jniElementName          (long document,long element);
-         private native String jniValueOfAttributeNamed(long document,long element,String attribute);
-         private native String jniTextForElement       (long document,long element);
-         private native long[] jniListElementsForQuery (long document,long element,String query);
+         private native long   jniParse                   (byte[] xml);
+         private native void   jniFree                    (long document);
+         private native long   jniRootElement             (long document);
+         private native long   jniFirstChild              (long document,long element);
+         private native long   jniChildElementNamed       (long document,long element,String tag);
+         private native long   jniNextSibling             (long document,long element);
+         private native long   jniNextSiblingNamed        (long document,long element,String tag);
+         private native String jniElementName             (long document,long element);
+         private native long[] jniListElementsForQuery    (long document,long element,String query);
+         private native long[] jniListAttributesForElement(long document,long element);
+         private native String jniAttributeName           (long document,long attribute);
+         private native String jniAttributeValue          (long document,long attribute);
+         private native String jniValueOfAttributeNamed   (long document,long element,String attribute);
+         private native String jniTextForElement          (long document,long element);
          
          // CONSTRUCTORS
 
@@ -80,15 +83,13 @@ public class TBXML
                 { return jniElementName(document,element);
                 }
          
-//         + (NSString*) attributeName:(TBXMLAttribute*)aXMLAttribute {
-//             if (nil == aXMLAttribute->name) return @"";
-//             return [NSString stringWithCString:&aXMLAttribute->name[0] encoding:NSUTF8StringEncoding];
-//         }
+         public String attributeName(long attribute) 
+                { return jniAttributeName(document,attribute);
+                }
          
-//         + (NSString*) attributeValue:(TBXMLAttribute*)aXMLAttribute {
-//             if (nil == aXMLAttribute->value) return @"";
-//             return [NSString stringWithCString:&aXMLAttribute->value[0] encoding:NSUTF8StringEncoding];
-//         }
+         public String attributeValue(long attribute) 
+                { return jniAttributeValue(document,attribute);
+                }
          
          public String valueOfAttributeNamed(String attribute,long element) 
                 { return jniValueOfAttributeNamed(document,element,attribute);
@@ -146,6 +147,10 @@ public class TBXML
 //           }
 //       }
 
+         public long[] listAttributesOfElement(long element)
+                { return jniListAttributesForElement(document,element);
+                }
+         
 //       + (void)iterateAttributesOfElement:(TBXMLElement *)anElement withBlock:(TBXMLIterateAttributeBlock)iterateAttributeBlock {
 //
 //           // Obtain first attribute from element

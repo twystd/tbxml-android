@@ -103,7 +103,7 @@ public class TestAPI extends AndroidTestCase
                   assertEquals("Invalid 'first-ascent' element name","first-ascent",tbxml.elementName(firstAscent));
                 }
 
-         public void testAttributeValue() throws Exception
+         public void testValueOfAttributeNamed() throws Exception
                 { String xml = read(R.raw.routesx);
                   
                   tbxml.parse(xml);
@@ -153,6 +153,114 @@ public class TestAPI extends AndroidTestCase
                    assertEquals ("Invalid element '123'",123,routes[0]);
                    assertEquals ("Invalid element '345'",345,routes[1]);
                    assertEquals ("Invalid element '567'",567,routes[2]);
+                   fail("NOT ACTUALLY IMPLEMENTED YET");
+                }
+
+         public void testListAttributesForElements() throws Exception
+                { String xml = read(R.raw.routesx);
+           
+                   tbxml.parse(xml);
+           
+                   long   root    = tbxml.rootXMLElement();        assertTrue("Invalid 'root' element",   root    != 0);
+                   long   section = tbxml.firstChild    (root);    assertTrue("Invalid 'section' element",section != 0);
+                   long   route   = tbxml.firstChild    (section); assertTrue("Invalid 'route' element",  route   != 0);
+                   long[] attributes;
+                   
+                   attributes = tbxml.listAttributesOfElement(section);
+                   
+                   assertNotNull("Invalid 'section' attribute list",attributes);
+                   assertEquals ("Invalid 'section' attribute list size",3,attributes.length);
+                   
+                   attributes = tbxml.listAttributesOfElement(route);
+                   
+                   assertNotNull("Invalid 'route' attribute list",attributes);
+                   assertEquals ("Invalid 'route' attribute list size",5,attributes.length);
+                }
+
+         public void testAttributeName() throws Exception
+                { String xml = read(R.raw.routesx);
+           
+                   tbxml.parse(xml);
+           
+                   long   root    = tbxml.rootXMLElement();        assertTrue("Invalid 'root' element",   root    != 0);
+                   long   section = tbxml.firstChild    (root);    assertTrue("Invalid 'section' element",section != 0);
+                   long   route   = tbxml.firstChild    (section); assertTrue("Invalid 'route' element",  route   != 0);
+                   long[] attributes;
+
+                   // ... section
+                   
+                   attributes = tbxml.listAttributesOfElement(section);
+                   
+                   assertNotNull("Invalid 'section' attribute list",attributes);
+                   assertEquals ("Invalid 'section' attribute list size",3,attributes.length);
+                   
+                   assertNotNull("Invalid 'section' 'id' attribute",tbxml.attributeName(attributes[0]));
+                   assertEquals ("Invalid 'section' 'id' attribute","id",tbxml.attributeName(attributes[0]));
+                   assertNotNull("Invalid 'section' 'name' attribute",tbxml.attributeName(attributes[1]));
+                   assertEquals ("Invalid 'section' 'name' attribute","name",tbxml.attributeName(attributes[1]));
+                   assertNotNull("Invalid 'section' 'order' attribute",tbxml.attributeName(attributes[2]));
+                   assertEquals ("Invalid 'section' 'order' attribute","order",tbxml.attributeName(attributes[2]));
+
+                   // ... route
+                   
+                   attributes = tbxml.listAttributesOfElement(route);
+
+                   assertNotNull("Invalid 'route' attribute list",attributes);
+                   assertEquals ("Invalid 'route' attribute list size",5,attributes.length);
+                   
+                   assertNotNull("Invalid 'route' 'bolts' attribute",tbxml.attributeName(attributes[0]));
+                   assertEquals ("Invalid 'route' 'bolts' attribute","bolts",tbxml.attributeName(attributes[0]));
+                   assertNotNull("Invalid 'route' 'grade' attribute",tbxml.attributeName(attributes[1]));
+                   assertEquals ("Invalid 'route' 'grade' attribute","grade",tbxml.attributeName(attributes[1]));
+                   assertNotNull("Invalid 'route' 'id' attribute",   tbxml.attributeName(attributes[2]));
+                   assertEquals ("Invalid 'route' 'id' attribute",   "id",tbxml.attributeName(attributes[2]));
+                   assertNotNull("Invalid 'route' 'name' attribute", tbxml.attributeName(attributes[3]));
+                   assertEquals ("Invalid 'route' 'name' attribute", "name",tbxml.attributeName(attributes[3]));
+                   assertNotNull("Invalid 'route' 'stars' attribute",tbxml.attributeName(attributes[4]));
+                   assertEquals ("Invalid 'route' 'stars' attribute","stars",tbxml.attributeName(attributes[4]));
+                }
+
+         public void testAttributeValue() throws Exception
+                { String xml = read(R.raw.routesx);
+           
+                   tbxml.parse(xml);
+           
+                   long   root    = tbxml.rootXMLElement();        assertTrue("Invalid 'root' element",   root    != 0);
+                   long   section = tbxml.firstChild    (root);    assertTrue("Invalid 'section' element",section != 0);
+                   long   route   = tbxml.firstChild    (section); assertTrue("Invalid 'route' element",  route   != 0);
+                   long[] attributes;
+
+                   // ... section
+                   
+                   attributes = tbxml.listAttributesOfElement(section);
+                   
+                   assertNotNull("Invalid 'section' attribute list",attributes);
+                   assertEquals ("Invalid 'section' attribute list size",3,attributes.length);
+                   
+                   assertNotNull("Invalid 'section' 'id' attribute",tbxml.attributeValue(attributes[0]));
+                   assertEquals ("Invalid 'section' 'id' attribute","10005000",tbxml.attributeValue(attributes[0]));
+                   assertNotNull("Invalid 'section' 'name' attribute",tbxml.attributeValue(attributes[1]));
+                   assertEquals ("Invalid 'section' 'name' attribute","Far Right",tbxml.attributeValue(attributes[1]));
+                   assertNotNull("Invalid 'section' 'order' attribute",tbxml.attributeValue(attributes[2]));
+                   assertEquals ("Invalid 'section' 'order' attribute","5",tbxml.attributeValue(attributes[2]));
+
+                   // ... route
+                   
+                   attributes = tbxml.listAttributesOfElement(route);
+
+                   assertNotNull("Invalid 'route' attribute list",attributes);
+                   assertEquals ("Invalid 'route' attribute list size",5,attributes.length);
+                   
+                   assertNotNull("Invalid 'route' 'bolts' attribute",tbxml.attributeValue(attributes[0]));
+                   assertEquals ("Invalid 'route' 'bolts' attribute","4B,A",tbxml.attributeValue(attributes[0]));
+                   assertNotNull("Invalid 'route' 'grade' attribute",tbxml.attributeValue(attributes[1]));
+                   assertEquals ("Invalid 'route' 'grade' attribute","18",tbxml.attributeValue(attributes[1]));
+                   assertNotNull("Invalid 'route' 'id' attribute",   tbxml.attributeValue(attributes[2]));
+                   assertEquals ("Invalid 'route' 'id' attribute",   "1",tbxml.attributeValue(attributes[2]));
+                   assertNotNull("Invalid 'route' 'name' attribute", tbxml.attributeValue(attributes[3]));
+                   assertEquals ("Invalid 'route' 'name' attribute", "Pixilated",tbxml.attributeValue(attributes[3]));
+                   assertNotNull("Invalid 'route' 'stars' attribute",tbxml.attributeValue(attributes[4]));
+                   assertEquals ("Invalid 'route' 'stars' attribute","***",tbxml.attributeValue(attributes[4]));
                 }
 
 	     // UTILITY FUNCTIONS

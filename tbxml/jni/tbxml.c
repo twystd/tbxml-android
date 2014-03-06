@@ -305,42 +305,88 @@ jlongArray Java_za_co_twyst_tbxml_TBXML_jniListElementsForQuery(JNIEnv* env,jobj
 	  return result;
 }
 
-//for (NSInteger i=0; i < components.count; ++i) {
-//    NSString *iTagName = [components objectAtIndex:i];
-//
-//    if ([iTagName isEqualToString:@"*"]) {
-//        currTBXMLElement = currTBXMLElement->firstChild;
-//
-//        // different behavior depending on if this is the end of the query or midstream
-//        if (i < (components.count - 1)) {
-//            // midstream
-//            do {
-//                NSString *restOfQuery = [[components subarrayWithRange:NSMakeRange(i + 1, components.count - i - 1)] componentsJoinedByString:@"."];
-//                [TBXML iterateElementsForQuery:restOfQuery fromElement:currTBXMLElement withBlock:iterateBlock];
-//            } while ((currTBXMLElement = currTBXMLElement->nextSibling));
-//
-//        }
-//    } else {
-//        currTBXMLElement = [TBXML childElementNamed:iTagName parentElement:currTBXMLElement];
-//    }
-//
-//    if (!currTBXMLElement) {
-//        break;
-//    }
-//}
-//
-//if (currTBXMLElement) {
-//    // enumerate
-//    NSString *childTagName = [components lastObject];
-//
-//    if ([childTagName isEqualToString:@"*"]) {
-//        childTagName = nil;
-//    }
-//
-//    do {
-//        iterateBlock(currTBXMLElement);
-//    } while (childTagName ? (currTBXMLElement = [TBXML nextSiblingNamed:childTagName searchFromElement:currTBXMLElement]) : (currTBXMLElement = currTBXMLElement->nextSibling));
+/** JNIListAttributesForElement
+ *
+ */
+jlongArray Java_za_co_twyst_tbxml_TBXML_jniListAttributesForElement(JNIEnv* env,jobject object,jlong document,jlong element) {
+      TBXMLDocument *doc  = (TBXMLDocument *) (uintptr_t) document;
+      TBXMLElement  *node = (TBXMLElement  *) (uintptr_t) element;
 
+      if (doc) {
+    	  if (node) {
+    		  // ... count attributes
+
+    	      int             count     = 0;
+    	      TBXMLAttribute *attribute = node->firstAttribute;
+
+    	      while(attribute != NULL) {
+    	    	  count++;
+
+    	    	  attribute = attribute->next;
+    	      }
+
+   			  __android_log_print(ANDROID_LOG_INFO,"TBXML","ATTRIBUTES: %d",count);
+
+   			  // ... copy attribute pointers to returned array
+
+   		      jlongArray result =  (*env)->NewLongArray(env,count);
+   		      int        ix     = 0;
+   		      jlong      fill[count];
+
+    	      attribute = node->firstAttribute;
+
+    	      while(attribute != NULL) {
+    	    	  fill[ix++] = (jlong) (uintptr_t) attribute;
+    	    	  attribute  = attribute->next;
+    	      }
+
+   		      (*env)->SetLongArrayRegion(env,result,0,count,fill);
+
+   		      return result;
+    	  }
+      }
+
+      // ... default
+
+      jlongArray result = (*env)->NewLongArray(env,0);
+      jlong      fill[0];
+
+      (*env)->SetLongArrayRegion(env,result,0,0,fill);
+
+	  return result;
+}
+
+/** JNIAttributeName
+ *
+ */
+jstring Java_za_co_twyst_tbxml_TBXML_jniAttributeName(JNIEnv* env,jobject object,jlong document,jlong attribute) {
+      const TBXMLDocument  *doc  = (TBXMLDocument  *) (uintptr_t) document;
+      const TBXMLAttribute *attr = (TBXMLAttribute *) (uintptr_t) attribute;
+
+      if (doc) {
+    	  if (attr) {
+    		  return (*env)->NewStringUTF(env,attr->name);
+    	  }
+      }
+
+	  return (*env)->NewStringUTF(env,"");
+}
+
+/** JNIAttributeValue
+ *
+ */
+jstring Java_za_co_twyst_tbxml_TBXML_jniAttributeValue(JNIEnv* env,jobject object,jlong document,jlong attribute) {
+      const TBXMLDocument  *doc  = (TBXMLDocument  *) (uintptr_t) document;
+      const TBXMLAttribute *attr = (TBXMLAttribute *) (uintptr_t) attribute;
+
+      if (doc) {
+    	  if (attr) {
+    		  return (*env)->NewStringUTF(env,attr->value);
+    	  }
+      }
+
+	  return (*env)->NewStringUTF(env,"");
+}
 
 // *** INTERNAL ***
 
