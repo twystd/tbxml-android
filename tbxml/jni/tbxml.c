@@ -241,7 +241,6 @@ jlongArray Java_za_co_twyst_tbxml_TBXML_jniListElementsForQuery(JNIEnv* env,jobj
       TBXMLDocument *doc     = (TBXMLDocument *) (uintptr_t) document;
       TBXMLElement  *node    = (TBXMLElement  *) (uintptr_t) element;
       const char    *str     = (*env)->GetStringUTFChars(env,query,0);
-      jlongArray     result  = (*env)->NewLongArray(env,3);
       TBXMLElement  *current = node;
 
       if (doc) {
@@ -249,33 +248,46 @@ jlongArray Java_za_co_twyst_tbxml_TBXML_jniListElementsForQuery(JNIEnv* env,jobj
     		   char *token = strtok(str,".");
 
     		   while (token) {
-    			  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY %s",token);
-
     			  if (strcmp(token,"*") == 0) {
     				  current = current->firstChild;
-    			  } else {
-                      // ... 'childElementNamed'
+        		      token   = strtok (NULL,".");
 
-    				  TBXMLElement *_node = current->firstChild;
-    				  TBXMLElement *child = NULL;
+                      if (!token && !current) {
+        		         break;
+                      }
 
-    	    		  while(_node) {
-    	    			  if (strcmp(_node->name,token) == 0) {
-    	    				  child = _node;
-    	    				  break;
-    	    			  }
+                      // ... wildcard in the middle of query
 
-    	    			  _node = _node->nextSibling;
-    	    		  }
+        		      if (token) {
+        				  //                       do {
+        				  //                           NSString *restOfQuery = [[components subarrayWithRange:NSMakeRange(i + 1, components.count - i - 1)] componentsJoinedByString:@"."];
+        				  //                           [TBXML iterateElementsForQuery:restOfQuery fromElement:currTBXMLElement withBlock:iterateBlock];
+        				  //                       } while ((currTBXMLElement = currTBXMLElement->nextSibling));
+        		      }
 
-    	    		  current = child;
+        		      continue;
     			  }
+
+    			  // ... 'childElementNamed'
+
+    			  TBXMLElement *_node = current->firstChild;
+    			  TBXMLElement *child = NULL;
+
+    			  while(_node) {
+    				  if (strcmp(_node->name,token) == 0) {
+    					  child = _node;
+    					  break;
+    				  }
+
+    				  _node = _node->nextSibling;
+    			  }
+
+    			  current = child;
+    		      token   = strtok (NULL,".");
 
                   if (!current) {
     		         break;
                   }
-
-    		      token = strtok (NULL,".");
     		   }
 
     		 // ... enumerate matching nodes
@@ -284,23 +296,44 @@ jlongArray Java_za_co_twyst_tbxml_TBXML_jniListElementsForQuery(JNIEnv* env,jobj
     		 int           count = 0;
 
     		 while(current) {
-    			 count++;
+    			 if (strcmp(current->name,root->name) == 0) {
+    				 count++;
+    			 }
+
     			 current = current->nextSibling;
     		 }
 
    			  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY:MATCH  %d",count);
+
+   			  jlongArray result = (*env)->NewLongArray(env,count);
+   		      jlong      fill[count];
+   		      int        ix;
+
+     	      current = root;
+     	      ix      = 0;
+
+     		  while(current) {
+     			 if (strcmp(current->name,root->name) == 0) {
+     				 fill[ix++] = (jlong) (uintptr_t) current;
+     			 }
+
+     			 current = current->nextSibling;
+     		  }
+
+   		      (*env)->SetLongArrayRegion(env,result,0,count,fill);
+   		      (*env)->ReleaseStringUTFChars(env,query,str);
+
+   			  return result;
     	  }
       }
 
-      int   i;
-      jlong fill[3];
+      // ... default
 
-      fill[0] = 123;
-      fill[1] = 345;
-      fill[2] = 567;
+      jlongArray result = (*env)->NewLongArray(env,0);
+      jlong      fill[0];
 
+      (*env)->SetLongArrayRegion(env,result,0,0,fill);
       (*env)->ReleaseStringUTFChars(env,query,str);
-      (*env)->SetLongArrayRegion   (env,result,0,3,fill);
 
 	  return result;
 }

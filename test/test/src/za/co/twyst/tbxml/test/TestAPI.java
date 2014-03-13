@@ -149,11 +149,44 @@ public class TestAPI extends AndroidTestCase
                    long[] routes = tbxml.listElementsForQuery("section.route",root);
                    
                    assertNotNull("Invalid element list",routes);
-                   assertEquals ("Invalid element list size",3,routes.length);
-                   assertEquals ("Invalid element '123'",123,routes[0]);
-                   assertEquals ("Invalid element '345'",345,routes[1]);
-                   assertEquals ("Invalid element '567'",567,routes[2]);
-                   fail("NOT ACTUALLY IMPLEMENTED YET");
+                   assertEquals ("Invalid element list size",4,routes.length);
+                   assertEquals ("Invalid element[0]","1",tbxml.valueOfAttributeNamed("id",routes[0]));
+                   assertEquals ("Invalid element[1]","W",tbxml.valueOfAttributeNamed("id",routes[1]));
+                   assertEquals ("Invalid element[2]","R",tbxml.valueOfAttributeNamed("id",routes[2]));
+                   assertEquals ("Invalid element[3]","Y",tbxml.valueOfAttributeNamed("id",routes[3]));
+                }
+
+         public void testListElementsForWildcardQuery() throws Exception
+                { String xml = read(R.raw.routesx);
+    
+                  tbxml.parse(xml);
+    
+                  long   root   = tbxml.rootXMLElement();         assertTrue("Invalid 'root' element",        root        != 0);
+                  long[] routes = tbxml.listElementsForQuery("section.routex.*",root);
+            
+                  assertNotNull("Invalid element list",routes);
+                  assertEquals ("Invalid element list size",4,routes.length);
+                  assertEquals ("Invalid element[0]","1",tbxml.valueOfAttributeNamed("id",routes[0]));
+                  assertEquals ("Invalid element[1]","W",tbxml.valueOfAttributeNamed("id",routes[1]));
+                  assertEquals ("Invalid element[2]","R",tbxml.valueOfAttributeNamed("id",routes[2]));
+                  assertEquals ("Invalid element[3]","Y",tbxml.valueOfAttributeNamed("id",routes[3]));
+                }
+
+         public void testListElementsForEmbeddedWildcardQuery() throws Exception
+                { String xml = read(R.raw.routesx);
+           
+                   tbxml.parse(xml);
+           
+                   long   root   = tbxml.rootXMLElement();         assertTrue("Invalid 'root' element",        root        != 0);
+                   long[] routes = tbxml.listElementsForQuery("section.*.marker",root);
+                   
+                   assertNotNull("Invalid element list",routes);
+                   assertEquals ("Invalid element list size",7,routes.length);
+                   assertEquals ("Invalid element[0]","1",tbxml.valueOfAttributeNamed("id",routes[0]));
+                   assertEquals ("Invalid element[1]","W",tbxml.valueOfAttributeNamed("id",routes[1]));
+                   assertEquals ("Invalid element[2]","R",tbxml.valueOfAttributeNamed("id",routes[2]));
+                   assertEquals ("Invalid element[3]","Y",tbxml.valueOfAttributeNamed("id",routes[3]));
+                   fail("NOT IMPLEMENTED YET");
                 }
 
          public void testListAttributesForElements() throws Exception

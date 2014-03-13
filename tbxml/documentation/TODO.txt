@@ -1,13 +1,4 @@
 TODO
 ====
 
-1. FIX  HARDCODED [3]
-   - actually looks the whole thing isn't finished :-)
-
-   jlongArray Java_za_co_twyst_tbxml_TBXML_jniListElementsForQuery(JNIEnv* env,jobject object,jlong document,jlong element,jstring query) {
-      TBXMLDocument *doc     = (TBXMLDocument *) (uintptr_t) document;
-      TBXMLElement  *node    = (TBXMLElement  *) (uintptr_t) element;
-      const char    *str     = (*env)->GetStringUTFChars(env,query,0);
-      jlongArray     result  = (*env)->NewLongArray(env,3);
-
-      
+1. wildcard query      
