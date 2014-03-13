@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:background="#ff202020"
+            android:background="#ff444444"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbars="none"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">
-
+    
  <RelativeLayout android:background="@drawable/background"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
@@ -71,16 +72,18 @@
                 android:layout_below="@+id/info">
    <Button style="@style/ButtonX" 
            android:id="@+id/xpath"
-           android:layout_width="0dp" 
-           android:layout_weight="1" 
-           android:layout_marginRight="4dp"
            android:text="@string/xpath" 
            android:onClick="onXPath" />
+   
+   <Button style="@style/ButtonX" 
+           android:id="@+id/dom"
+           android:layout_marginLeft="4dp"
+           android:layout_marginRight="4dp"
+           android:text="@string/dom" 
+           android:onClick="onDOM" />
+   
    <Button style="@style/ButtonX" 
            android:id="@+id/sax"   
-           android:layout_width="0dp" 
-           android:layout_weight="1" 
-           android:layout_marginLeft="4dp"
            android:text="@string/sax" 
            android:onClick="onSax" />
   </LinearLayout>
@@ -96,103 +99,31 @@
            android:layout_width="0dp" 
            android:layout_weight="1" 
            android:layout_marginRight="4dp"
-           android:text="@string/java" 
-           android:onClick="onJAVA" />
+           android:text="@string/tbxml" 
+           android:onClick="onTBXML" />
  
    <Button style="@style/ButtonX"
            android:id="@+id/c"
            android:layout_width="0dp" 
            android:layout_weight="1" 
            android:layout_marginLeft="4dp"
-           android:text="@string/c" 
-           android:onClick="onC"/>
+           android:text="@string/ndk" 
+           android:onClick="onNDK"/>
   </LinearLayout>
- 
-  <RelativeLayout android:id="@+id/grid"
-                  android:background="@drawable/grid"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="12dp"
-                  android:layout_below="@+id/tbxml"
-                  android:layout_centerHorizontal="true"
-                  android:padding="3dp">
 
-   <LinearLayout style="@style/Row" 
-                 android:id="@+id/headings" 
-                 android:layout_alignParentTop="true" 
-                 android:layout_toRightOf="@+id/c_label">
-    <TextView style="@style/Cell" android:text="@string/min"     />
-    <TextView style="@style/Cell" android:text="@string/average" />
-    <TextView style="@style/Cell" android:text="@string/max"     />
-    <TextView style="@style/Cell" android:text="@string/runs"    />
-   </LinearLayout>
-
-   <LinearLayout style="@style/Row" 
-                 android:id="@+id/xpath_row" 
-                 android:layout_below="@+id/headings" 
-                 android:layout_alignLeft="@+id/headings">
-    <TextView style="@style/Cell" android:id="@+id/xpath_min"  />
-    <TextView style="@style/Cell" android:id="@+id/xpath_ave"  />
-    <TextView style="@style/Cell" android:id="@+id/xpath_max"  />
-    <TextView style="@style/Cell" android:id="@+id/xpath_runs" />
-   </LinearLayout>
-
-   <LinearLayout style="@style/Row" 
-                 android:id="@+id/sax_row" 
-                 android:layout_below="@+id/xpath_row" 
-                 android:layout_alignLeft="@+id/headings">
-    <TextView style="@style/Cell" android:id="@+id/sax_min"  />
-    <TextView style="@style/Cell" android:id="@+id/sax_ave"  />
-    <TextView style="@style/Cell" android:id="@+id/sax_max"  />
-    <TextView style="@style/Cell" android:id="@+id/sax_runs" />
-   </LinearLayout>
-   
-   <LinearLayout style="@style/Row" 
-                 android:id="@+id/java_row" 
-                 android:layout_below="@+id/sax_row" 
-                 android:layout_alignLeft="@+id/headings">
-    <TextView style="@style/Cell" android:id="@+id/java_min"  />
-    <TextView style="@style/Cell" android:id="@+id/java_ave"  />
-    <TextView style="@style/Cell" android:id="@+id/java_max"  />
-    <TextView style="@style/Cell" android:id="@+id/java_runs" />
-   </LinearLayout> 
-
-   <LinearLayout style="@style/Row" 
-                 android:id="@+id/c_row" 
-                 android:layout_below="@+id/java_row" 
-                 android:layout_alignLeft="@+id/headings">
-    <TextView style="@style/Cell" android:id="@+id/c_min"  />
-    <TextView style="@style/Cell" android:id="@+id/c_ave"  />
-    <TextView style="@style/Cell" android:id="@+id/c_max"  />
-    <TextView style="@style/Cell" android:id="@+id/c_runs" />
-   </LinearLayout>
+  <GridView android:id="@+id/grid"
+            android:background="@drawable/grid"
+            android:layout_width="match_parent"
+            android:layout_height="148dp"
+            android:layout_marginTop="12dp"
+            android:layout_below="@+id/tbxml"
+            android:layout_centerHorizontal="true"
+            android:isScrollContainer="false"
+            android:numColumns="5"
+            android:verticalSpacing="2dp"
+            android:horizontalSpacing="2dp"
+            android:stretchMode="columnWidth" />
   
-   <TextView style="@style/Label"
-             android:id="@+id/jdk_label" 
-             android:layout_alignBottom="@+id/xpath_row" 
-             android:layout_alignParentLeft="true" 
-             android:text="@string/label_xpath" /> 
-
-   <TextView style="@style/Label"
-             android:id="@+id/sax_label" 
-             android:layout_alignBottom="@+id/sax_row" 
-             android:layout_alignLeft="@+id/jdk_label" 
-             android:text="@string/label_sax" /> 
-   
-   <TextView style="@style/Label"
-             android:id="@+id/java_label" 
-             android:layout_alignBottom="@+id/java_row" 
-             android:layout_alignLeft="@+id/jdk_label" 
-             android:text="@string/label_java" />
-   
-   <TextView style="@style/Label"
-             android:id="@+id/c_label" 
-             android:layout_alignBottom="@+id/c_row" 
-             android:layout_alignLeft="@+id/java_label" 
-             android:text="@string/label_c" />
-   
-  </RelativeLayout> 
-     
   <ProgressBar style="@android:style/Widget.ProgressBar.Large"
                android:id="@+id/windmill"
                android:layout_width="wrap_content"
@@ -200,4 +131,7 @@
                android:layout_centerInParent="true" 
                android:visibility="gone" />
  </RelativeLayout>
+ 
 </ScrollView>
+
+    

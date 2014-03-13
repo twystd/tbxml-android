@@ -18,10 +18,10 @@ import za.co.twyst.tbxml.benchmark.db.Route;
 import za.co.twyst.tbxml.benchmark.db.Section;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
 
-public class JDK implements Parser 
+public class XPATH implements Parser 
        { // CONSTANTS
     
-		 private static final String TAG = JDK.class.getSimpleName();
+		 private static final String TAG = XPATH.class.getSimpleName();
     
          // INSTANCE VARIABLES
          
@@ -30,7 +30,7 @@ public class JDK implements Parser
          
          // CONSTRUCTOR
          
-         public JDK(String xml)
+         public XPATH(String xml)
                 { this.xml   = xml == null ? "" : xml;
                   this.xpath = XPathFactory.newInstance().newXPath();
                 }
