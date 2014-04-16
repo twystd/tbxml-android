@@ -2,6 +2,14 @@ package za.co.twyst.tbxml.test;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 import android.content.Context;
 import android.test.AndroidTestCase;
@@ -19,11 +27,13 @@ public class TestAPI extends AndroidTestCase
 	     // TEST VARIABLES
 	     
 	     private TBXML tbxml;
-	     
+	     private XPath xpath;
+
 	     // SETUP/TEARDOWN
 
 	     protected void setUp() throws Exception 
 	               { tbxml = new TBXML();
+	                 xpath = XPathFactory.newInstance().newXPath();
 	               }
 
 	     protected void tearDown() throws Exception 
@@ -33,15 +43,31 @@ public class TestAPI extends AndroidTestCase
 	     // UNIT TESTS
 	
 	     public void testParse() throws Exception
-	            { String xml = read(R.raw.routesx);
-	              
+	            { String      xml = read(R.raw.routesx);
+	              InputSource source  = new InputSource(new StringReader(xml));
+
 	              tbxml.parse(xml);
 	              
-	              long root        = tbxml.rootXMLElement();         assertTrue("Invalid 'root' element",        root        != 0);
-	              long section     = tbxml.firstChild (root);        assertTrue("Invalid 'section' element",     section     != 0);
-                  long route       = tbxml.firstChild (section);     assertTrue("Invalid 'route' element",       route       != 0);
-                  long description = tbxml.firstChild (route);       assertTrue("Invalid 'description' element", description != 0);
-                  long firstAscent = tbxml.nextSibling(description); assertTrue("Invalid 'first ascent' element",firstAscent != 0);
+	              Node xpathRoot = (Node) xpath.evaluate("/routes",source,XPathConstants.NODE);
+	              long tbxmlRoot = tbxml.rootXMLElement();         
+	              
+	              assertTrue("Invalid 'root' element",tbxmlRoot != 0);
+	              
+	              long tbxmlSection = tbxml.firstChild (tbxmlRoot);        
+	              
+	              assertTrue("Invalid 'section' element",tbxmlSection != 0);
+	              
+                  long tbxmlRoute = tbxml.firstChild (tbxmlSection);     
+                  
+                  assertTrue("Invalid 'route' element",tbxmlRoute != 0);
+                  
+                  long tbxmlDescription = tbxml.firstChild (tbxmlRoute);       
+                  
+                  assertTrue("Invalid 'description' element", tbxmlDescription != 0);
+                  
+                  long tbxmlFirstAscent = tbxml.nextSibling(tbxmlDescription); 
+                  
+                  assertTrue("Invalid 'first ascent' element",tbxmlFirstAscent != 0);
 	            }
 	     
          public void testChildElementNamed() throws Exception
