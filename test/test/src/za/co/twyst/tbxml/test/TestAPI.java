@@ -176,7 +176,7 @@ public class TestAPI extends AndroidTestCase
                 { String xml = read(R.raw.routesx);
            
                    tbxml.parse(xml);
-           
+
                    long   root   = tbxml.rootXMLElement();         assertTrue("Invalid 'root' element",        root        != 0);
                    long[] routes = tbxml.listElementsForQuery("section.*.marker",root);
                    

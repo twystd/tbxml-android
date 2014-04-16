@@ -1,5 +1,10 @@
 package za.co.twyst.tbxml;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.util.Log;
+
 public class TBXML
        { // CONSTANTS
          
@@ -100,71 +105,36 @@ public class TBXML
                 }
 
          public long[] listElementsForQuery(String query,long element)
-                { return jniListElementsForQuery(document,element,query);
+                { Log.w("TRACE","listElementsForQuery [" + query + "]");
+                
+        	      List<String> segments = new ArrayList<String>();
+        	      String[]     tokens   = query == null ? new String[0] : query.split("\\.");
+        	      String       segment  = null;
+        	      long[]       elements = new long[0];
+                
+        	      for (String token: tokens)
+        	          { segment = segment == null ? token : segment + "." + token;
+        	          
+        	            if (token.equals("*"))
+        	               { segments.add(segment);
+        	                 segment = null;
+        	               }
+        	          }
+        	 
+        	      if (segment != null)
+        	         { segments.add(segment);
+        	         }
+        	      
+//        	      for (String string: segments)
+//        	    	  { elements = jniListElementsForQuery(document,element,string);
+//        	    	  }
+        	      
+        	      Log.w("TRACE","listElementsForQuery/X [" + query + "]");
+        	      return jniListElementsForQuery(document,element,query);
                 }
-
-//       + (void)iterateElementsForQuery:(NSString *)query fromElement:(TBXMLElement *)anElement withBlock:(TBXMLIterateBlock)iterateBlock {
-//           
-//           NSArray *components = [query componentsSeparatedByString:@"."];
-//           TBXMLElement *currTBXMLElement = anElement;
-//           
-//           // navigate down
-//           for (NSInteger i=0; i < components.count; ++i) {
-//               NSString *iTagName = [components objectAtIndex:i];
-//               
-//               if ([iTagName isEqualToString:@"*"]) {
-//                   currTBXMLElement = currTBXMLElement->firstChild;
-//                   
-//                   // different behavior depending on if this is the end of the query or midstream
-//                   if (i < (components.count - 1)) {
-//                       // midstream
-//                       do {
-//                           NSString *restOfQuery = [[components subarrayWithRange:NSMakeRange(i + 1, components.count - i - 1)] componentsJoinedByString:@"."];
-//                           [TBXML iterateElementsForQuery:restOfQuery fromElement:currTBXMLElement withBlock:iterateBlock];
-//                       } while ((currTBXMLElement = currTBXMLElement->nextSibling));
-//                       
-//                   }
-//               } else {
-//                   currTBXMLElement = [TBXML childElementNamed:iTagName parentElement:currTBXMLElement];            
-//               }
-//               
-//               if (!currTBXMLElement) {
-//                   break;
-//               }
-//           }
-//           
-//           if (currTBXMLElement) {
-//               // enumerate
-//               NSString *childTagName = [components lastObject];
-//               
-//               if ([childTagName isEqualToString:@"*"]) {
-//                   childTagName = nil;
-//               }
-//               
-//               do {
-//                   iterateBlock(currTBXMLElement);
-//               } while (childTagName ? (currTBXMLElement = [TBXML nextSiblingNamed:childTagName searchFromElement:currTBXMLElement]) : (currTBXMLElement = currTBXMLElement->nextSibling));
-//           }
-//       }
 
          public long[] listAttributesOfElement(long element)
                 { return jniListAttributesForElement(document,element);
                 }
-         
-//       + (void)iterateAttributesOfElement:(TBXMLElement *)anElement withBlock:(TBXMLIterateAttributeBlock)iterateAttributeBlock {
-//
-//           // Obtain first attribute from element
-//           TBXMLAttribute * attribute = anElement->firstAttribute;
-//           
-//           // if attribute is valid
-//           
-//           while (attribute) {
-//               // Call the iterateAttributeBlock with the attribute, it's name and value
-//               iterateAttributeBlock(attribute, [TBXML attributeName:attribute], [TBXML attributeValue:attribute]);
-//               
-//               // Obtain the next attribute
-//               attribute = attribute->next;
-//           }
-//       }
        }
 

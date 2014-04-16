@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+ <declare-styleable name="GroupBox">
+  <attr name="label"             format="string"    />
+  <attr name="labelColour"       format="color"     />
+  <attr name="labelTextSize"     format="dimension" />
+  <attr name="labelMarginLeft"   format="dimension" />
+  <attr name="labelMarginRight"  format="dimension" />
+  <attr name="labelPaddingLeft"  format="dimension" />
+  <attr name="labelPaddingRight" format="dimension" />
+  <attr name="cornerRadius"      format="dimension" />
+  <attr name="strokeWidth"       format="dimension" />
+  <attr name="strokeColour"      format="color"     />
+ </declare-styleable>
+</resources>

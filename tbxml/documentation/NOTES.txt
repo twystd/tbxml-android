@@ -1,0 +1,10 @@
+NOTES
+=====
+
+0. https://stackoverflow.com/questions/6340802/java-xpath-apache-jaxp-implementation-performance
+1. https://stackoverflow.com/questions/3782618/xpath-evaluate-performance-slows-down-absurdly-over-multiple-calls
+2. http://ejohn.org/blog/xpath-overnight/
+3. http://blogs.msdn.com/b/xmlteam/archive/2011/09/26/effective-xml-part-2-how-to-kill-the-performance-of-an-app-with-xpath.aspx
+4. https://stackoverflow.com/questions/17704235/android-xpath-evaluate-very-slow
+5. http://vtd-xml.sourceforge.net/
+6. http://fahdshariff.blogspot.de/2010/08/faster-xpaths-with-vtd-xml.html
