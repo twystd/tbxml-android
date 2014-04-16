@@ -9,31 +9,31 @@
     Takes the vague slightly right-slanting break about 3m left of the large chimney filled with chockstones.
    </description>
    <first-ascent by="Peter Speed,Tony Seebregts" date="2013-03-21" />
-   <marker id="1" />
+   <marker id="M0" />
   </route>    
   
   <routex id="Q">
-   <marker id="1" />
+   <marker id="M1" />
   </routex>
       
   <route  id="W" >
-   <marker id="1" />
+   <marker id="M2" />
   </route>
   
   <routex id="E" >
-   <marker id="1" />
+   <marker id="M3" />
   </routex>
   
   <route  id="R">
-   <marker id="1" />
+   <marker id="M4" />
   </route>
   
   <routex id="T">
-   <marker id="1" />
+   <marker id="M5" />
   </routex>
   
   <route  id="Y">
-   <marker id="1" />
+   <marker id="M6" />
   </route>
   
  </section>

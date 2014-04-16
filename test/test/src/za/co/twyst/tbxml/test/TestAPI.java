@@ -165,11 +165,10 @@ public class TestAPI extends AndroidTestCase
                   long[] routes = tbxml.listElementsForQuery("section.routex.*",root);
             
                   assertNotNull("Invalid element list",routes);
-                  assertEquals ("Invalid element list size",4,routes.length);
-                  assertEquals ("Invalid element[0]","1",tbxml.valueOfAttributeNamed("id",routes[0]));
-                  assertEquals ("Invalid element[1]","W",tbxml.valueOfAttributeNamed("id",routes[1]));
-                  assertEquals ("Invalid element[2]","R",tbxml.valueOfAttributeNamed("id",routes[2]));
-                  assertEquals ("Invalid element[3]","Y",tbxml.valueOfAttributeNamed("id",routes[3]));
+                  assertEquals ("Invalid element list size",3,routes.length);
+                  assertEquals ("Invalid element[0]","M1",tbxml.valueOfAttributeNamed("id",routes[0]));
+                  assertEquals ("Invalid element[1]","M3",tbxml.valueOfAttributeNamed("id",routes[1]));
+                  assertEquals ("Invalid element[2]","M5",tbxml.valueOfAttributeNamed("id",routes[2]));
                 }
 
          public void testListElementsForEmbeddedWildcardQuery() throws Exception
@@ -182,11 +181,13 @@ public class TestAPI extends AndroidTestCase
                    
                    assertNotNull("Invalid element list",routes);
                    assertEquals ("Invalid element list size",7,routes.length);
-                   assertEquals ("Invalid element[0]","1",tbxml.valueOfAttributeNamed("id",routes[0]));
-                   assertEquals ("Invalid element[1]","W",tbxml.valueOfAttributeNamed("id",routes[1]));
-                   assertEquals ("Invalid element[2]","R",tbxml.valueOfAttributeNamed("id",routes[2]));
-                   assertEquals ("Invalid element[3]","Y",tbxml.valueOfAttributeNamed("id",routes[3]));
-                   fail("NOT IMPLEMENTED YET");
+                   assertEquals ("Invalid element[0]","M0",tbxml.valueOfAttributeNamed("id",routes[0]));
+                   assertEquals ("Invalid element[1]","M1",tbxml.valueOfAttributeNamed("id",routes[1]));
+                   assertEquals ("Invalid element[2]","M2",tbxml.valueOfAttributeNamed("id",routes[2]));
+                   assertEquals ("Invalid element[3]","M3",tbxml.valueOfAttributeNamed("id",routes[3]));
+                   assertEquals ("Invalid element[4]","M4",tbxml.valueOfAttributeNamed("id",routes[4]));
+                   assertEquals ("Invalid element[5]","M5",tbxml.valueOfAttributeNamed("id",routes[5]));
+                   assertEquals ("Invalid element[6]","M6",tbxml.valueOfAttributeNamed("id",routes[6]));
                 }
 
          public void testListAttributesForElements() throws Exception

@@ -236,112 +236,121 @@ jstring Java_za_co_twyst_tbxml_TBXML_jniTextForElement(JNIEnv* env,jobject objec
 }
 
 
-//jlongArray Java_za_co_twyst_tbxml_TBXML_jniListElementsForQuery(JNIEnv* env,jobject object,jlong document,jlong element,jstring query) {
-//      TBXMLDocument *doc     = (TBXMLDocument *) (uintptr_t) document;
-//      TBXMLElement  *node    = (TBXMLElement  *) (uintptr_t) element;
-//      const char    *str     = (*env)->GetStringUTFChars(env,query,0);
-//      TBXMLElement  *current = node;
-//
-//      if (doc) {
-//    	  if (node) {
-//    		   char *token = strtok(str,".");
-//
-//    		   while (token) {
-//    			  __android_log_print(ANDROID_LOG_INFO,"TBXML","WILDCARD::TOKEN %s",token);
-//
-////    			  if (strcmp(token,"*") == 0) {
-////    				  current = current->firstChild;
-////    				  break;
-////
-//////        		      token   = strtok (NULL,".");
-//////
-//////                      if (!token && !current) {
-//////        		         break;
-//////                      }
-////
-//////                    // ... wildcard in the middle of query
-//////
-//////        		      if (token) {
-//////                       do {
-//////                           NSString *restOfQuery = [[components subarrayWithRange:NSMakeRange(i + 1, components.count - i - 1)] componentsJoinedByString:@"."];
-//////                           [TBXML iterateElementsForQuery:restOfQuery fromElement:currTBXMLElement withBlock:iterateBlock];
-//////                       } while ((currTBXMLElement = currTBXMLElement->nextSibling));
-//////        		      }
-//////
-//////        		      continue;
-////    			  }
-//
-//    			  // ... 'childElementNamed'
-//
-//    			  TBXMLElement *_node = current->firstChild;
-//    			  TBXMLElement *child = NULL;
-//
-//    			  while(_node) {
-//    				  if ((strcmp(_node->name,token) == 0) || (strcmp(token,"*") == 0)){
-//    		   			  __android_log_print(ANDROID_LOG_INFO,"TBXML","DEBUG %s",_node->name);
-//
-//    					  child = _node;
-//    					  break;
-//    				  }
-//
-//    				  _node = _node->nextSibling;
-//    			  }
-//
-//    			  current = child;
-//    		      token   = strtok (NULL,".");
-//
-//                  if (!current) {
-//    		         break;
-//                  }
-//    		   }
-//
-//    		 // ... enumerate matching nodes
-//
-//    	     TBXMLElement *root  = current;
-//    		 int           count = 0;
-//
-//    		 while(current) {
-//    			 if (strcmp(current->name,root->name) == 0) {
-//    				 count++;
-//    			 }
-//
-//    			 current = current->nextSibling;
-//    		 }
-//
-//   			  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY:MATCH  %d",count);
-//
-//   			  jlongArray result = (*env)->NewLongArray(env,count);
-//   		      jlong      fill[count];
-//   		      int        ix;
-//
-//     	      current = root;
-//     	      ix      = 0;
-//
-//     		  while(current) {
-//     			 if (strcmp(current->name,root->name) == 0) {
-//     				 fill[ix++] = (jlong) (uintptr_t) current;
-//     			 }
-//
-//     			 current = current->nextSibling;
-//     		  }
-//
-//   		      (*env)->SetLongArrayRegion(env,result,0,count,fill);
-//   		      (*env)->ReleaseStringUTFChars(env,query,str);
-//
-//   			  return result;
-//    	  }
-//      }
-//
-//      // ... default
-//
-//      jlongArray result = (*env)->NewLongArray(env,0);
-//      jlong      fill[0];
-//
-//      (*env)->SetLongArrayRegion(env,result,0,0,fill);
-//      (*env)->ReleaseStringUTFChars(env,query,str);
-//
-//	  return result;
-//}
+/** JNIListElementsForQuery
+ *
+ */
+jlongArray Java_za_co_twyst_tbxml_TBXML_jniListElementsForQuery(JNIEnv* env,jobject object,jlong document,jlong element,jstring query) {
+      TBXMLDocument *doc     = (TBXMLDocument *) (uintptr_t) document;
+      TBXMLElement  *node    = (TBXMLElement  *) (uintptr_t) element;
+      const char    *str     = (*env)->GetStringUTFChars(env,query,0);
+
+	  int            matched = 0;
+	  int            count   = 1;
+	  int            size    = count + 1;
+	  int            N       = CHUNK *size;
+	  TBXMLElement **nodes   = (TBXMLElement **) malloc(N);
+
+	  memset(nodes,0,N);
+	  nodes[0] = node;
+
+      if (doc) {
+    	  if (node) {
+    		  char *token = strtok(str,".");
+
+    		   while (token) {
+    			  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY::TOKEN %p %s",nodes,token);
+
+    			  TBXMLElement **p       = nodes;
+    			  TBXMLElement **matches = (TBXMLElement **) malloc(CHUNK * 1);
+
+    			  matched = 0;
+
+    			  while(*p) {
+    			      TBXMLElement  *current = *p;
+        			  TBXMLElement **list    = childElementsForName(current,token,&count);
+
+        			  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY::CHILD %d",count);
+
+        			  // ... append child list to matches
+
+        			  int            M = matched + count + 1;
+        			  TBXMLElement **m = (TBXMLElement **) malloc(M*CHUNK);
+
+        			  memset (m,0,M*CHUNK);
+        			  memmove(&m[0],      matches,matched*CHUNK);
+        			  memmove(&m[matched],list,   count  *CHUNK);
+
+        			  free(list);
+        			  free(matches);
+
+        			  matches  = m;
+        			  matched += count;
+
+        			  // ... next node
+
+        			  p++;
+    			  }
+
+    			  // .. replace nodes with current match list
+
+    			  free(nodes);
+
+    			  nodes = matches;
+    			  token = strtok (NULL,".");
+    		   }
+    	  }
+      }
+
+      // ... done
+
+      jlong          fill[matched];
+	  TBXMLElement **q      = nodes;
+      jlongArray     result = (*env)->NewLongArray(env,matched);
+      int            ix     = 0;
+
+      while(ix < matched) {
+    	  fill[ix++] = *q++;
+      }
+
+	  free(nodes);
+
+      (*env)->SetLongArrayRegion(env,result,0,matched,fill);
+      (*env)->ReleaseStringUTFChars(env,query,str);
+
+	  return result;
+}
+
+TBXMLElement **childElementsForName(TBXMLElement *node,char *tag,int *M) {
+    BOOL            wildcard = strcmp("*",tag) == 0;
+    TBXMLElement   *child    = node->firstChild;
+    int             count    = 0;
+	int             size     = count + 1;
+	int             N        = sizeof(TBXMLElement *) * size;
+    TBXMLElement **list      = (TBXMLElement **) malloc(N);
+    TBXMLElement **listx;
+
+    memset(list,0,N);
+
+    while(child) {
+    	if (wildcard || (strcmp(child->name,tag) == 0)){
+    	    N     = CHUNK * ++size;
+    	    listx = (TBXMLElement **) malloc(N);
+
+    	    memset (listx,0,N);
+    	    memmove(listx,list,CHUNK * count);
+    	    free   (list);
+
+    	    list = listx;
+    	    list[count++] = child;
+    	}
+
+    	child = child->nextSibling;
+    }
+
+    *M = count;
+
+	return list;
+}
 
 /** JNIListAttributesForElement
  *
@@ -732,128 +741,4 @@ TBXMLAttribute *nextAvailableAttribute(TBXMLDocument *document) {
 	return &document->currentAttributeBuffer->attributes[document->currentAttribute];
 }
 
-
-
-
-// ####### WIP ########
-
-/** JNIListElementsForQuery
- *
- */
-jlongArray Java_za_co_twyst_tbxml_TBXML_jniListElementsForQuery(JNIEnv* env,jobject object,jlong document,jlong element,jstring query) {
-      TBXMLDocument *doc     = (TBXMLDocument *) (uintptr_t) document;
-      TBXMLElement  *node    = (TBXMLElement  *) (uintptr_t) element;
-      const char    *str     = (*env)->GetStringUTFChars(env,query,0);
-
-	  int            count = 1;
-	  int            size  = count + 1;
-	  int            N     = CHUNK *size;
-	  TBXMLElement **nodes = (TBXMLElement **) malloc(N);
-
-	  memset(nodes,0,N);
-	  nodes[0] = node;
-
-      if (doc) {
-    	  if (node) {
-    		  char *token = strtok(str,".");
-
-    		   while (token) {
-    			  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY::TOKEN %p %s",nodes,token);
-
-    			  TBXMLElement **p       = nodes;
-    			  TBXMLElement **matches = (TBXMLElement **) malloc(CHUNK * 1);
-    			  int            matched = 0;
-
-    			  while(*p) {
-    			      TBXMLElement  *current = *p;
-        			  TBXMLElement **list    = childElementsForName(current,token,&count);
-
-        			  // ... append child list to matches
-
-        			  int            M = matched + count + 1;
-        			  TBXMLElement **m = (TBXMLElement **) malloc(M*CHUNK);
-
-        			  memset (m,0,M*CHUNK);
-        			  memmove(&m[0],      matches,matched*CHUNK);
-        			  memmove(&m[matched],list,   count  *CHUNK);
-
-        			  free(list);
-        			  free(matches);
-
-        			  matches  = m;
-        			  matched += count;
-
-        			  // ... next node
-
-        			  p++;
-    			  }
-
-//    			  TBXMLElement **q = matches;
-//
-//    			  while(*q) {
-//        			  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY::MATCH %d %s  %s",count,token,(*q)->name);
-//        			  q++;
-//    			  }
-
-    			  // .. replace nodes with current match list
-
-    			  free(nodes);
-
-    			  nodes = matches;
-    			  token = strtok (NULL,".");
-    		   }
-    	  }
-      }
-
-      // ... done
-
-	  __android_log_print(ANDROID_LOG_INFO,"TBXML","QUERY::MATCH %d",count);
-
-      jlong          fill[count];
-	  TBXMLElement **q      = nodes;
-      jlongArray     result = (*env)->NewLongArray(env,count);
-      int            ix     = 0;
-
-      while(ix < count) {
-    	  fill[ix++] = *q++;
-      }
-
-	  free(nodes);
-
-      (*env)->SetLongArrayRegion(env,result,0,count,fill);
-      (*env)->ReleaseStringUTFChars(env,query,str);
-
-	  return result;
-}
-
-TBXMLElement **childElementsForName(TBXMLElement *node,char *tag,int *M) {
-    TBXMLElement   *child = node->firstChild;
-    int             count = 0;
-	int             size  = count + 1;
-	int             N     = sizeof(TBXMLElement *) * size;
-    TBXMLElement **list   = (TBXMLElement **) malloc(N);
-    TBXMLElement **listx;
-
-    memset(list,0,N);
-
-    while(child) {
-    	if (strcmp(child->name,tag) == 0) {
-    	    N     = CHUNK * ++size;
-    	    listx = (TBXMLElement **) malloc(N);
-
-    	    memset (listx,0,N);
-    	    memmove(listx,list,CHUNK * count);
-    	    free   (list);
-
-    	    list = listx;
-    	    list[count++] = child;
-    	}
-
-    	child = child->nextSibling;
-    }
-
-    *M = count;
-
-	return list;
-}
 

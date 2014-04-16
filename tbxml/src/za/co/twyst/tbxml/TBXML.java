@@ -105,32 +105,7 @@ public class TBXML
                 }
 
          public long[] listElementsForQuery(String query,long element)
-                { Log.w("TRACE","listElementsForQuery [" + query + "]");
-                
-        	      List<String> segments = new ArrayList<String>();
-        	      String[]     tokens   = query == null ? new String[0] : query.split("\\.");
-        	      String       segment  = null;
-        	      long[]       elements = new long[0];
-                
-        	      for (String token: tokens)
-        	          { segment = segment == null ? token : segment + "." + token;
-        	          
-        	            if (token.equals("*"))
-        	               { segments.add(segment);
-        	                 segment = null;
-        	               }
-        	          }
-        	 
-        	      if (segment != null)
-        	         { segments.add(segment);
-        	         }
-        	      
-//        	      for (String string: segments)
-//        	    	  { elements = jniListElementsForQuery(document,element,string);
-//        	    	  }
-        	      
-        	      Log.w("TRACE","listElementsForQuery/X [" + query + "]");
-        	      return jniListElementsForQuery(document,element,query);
+                { return jniListElementsForQuery(document,element,query);
                 }
 
          public long[] listAttributesOfElement(long element)
