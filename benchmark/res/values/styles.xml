@@ -1,34 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources>
+<resources xmlns:groupbox="http://schemas.android.com/apk/res/za.co.twyst.tbxml.benchmark">
 
- <style name="AppBaseTheme" parent="android:Theme.Light">
- </style>
-
- <style name="AppTheme" parent="AppBaseTheme">
- </style>
+ <style name="AppBaseTheme" parent="android:Theme.Light" />
+ <style name="AppTheme"     parent="AppBaseTheme"        />
     
- <style name="Row">
-  <item name="android:orientation">horizontal</item>
-  <item name="android:layout_width">fill_parent</item> 
-  <item name="android:layout_height">wrap_content</item>
-  <item name="android:layout_margin">1dp</item>
-  <item name="android:textColor">#ff202020</item>
- </style>
-    
- <style name="Cell">
-  <item name="android:layout_width">0dp</item> 
-  <item name="android:background">#ffffffff</item>
-  <item name="android:layout_height">wrap_content</item>
-  <item name="android:layout_weight">1</item>
-  <item name="android:layout_margin">1dp</item>
-  <item name="android:padding">1dp</item>
-  <item name="android:gravity">center</item>
-  <item name="android:textColor">#ff000000</item>
-  <item name="android:textSize">12sp</item>
- </style>
- 
- <style name="CellX">
+ <style name="CellBase">
   <item name="android:background">#ffffffff</item>
   <item name="android:layout_width">match_parent</item> 
   <item name="android:layout_height">wrap_content</item>
@@ -38,22 +15,49 @@
   <item name="android:textSize">12sp</item>
  </style>
  
- <style name="Label">
+ <style name="Cell" parent="CellBase" />
+ 
+ <style name="LabelBase">
   <item name="android:layout_width">wrap_content</item> 
   <item name="android:layout_height">wrap_content</item>
+  <item name="android:layout_marginRight">8dp</item>
   <item name="android:textColor">#ff202020</item>
   <item name="android:textSize">12sp</item>
-  </style>
+ </style>
+
+ <style name="Label" parent="LabelBase" />
  
- <style name="ButtonX">
+ <style name="ButtonBase">
   <item name="android:background">@drawable/button</item>
   <item name="android:layout_width">0dp</item>
   <item name="android:layout_height">wrap_content</item>
   <item name="android:layout_weight">1</item>
-  <item name="android:layout_marginBottom">8dp</item>
   <item name="android:layout_centerHorizontal">true</item>
   <item name="android:padding">4dp</item>
-  <item name="android:textColor">#ff404040</item> 
+  <item name="android:textColor">@color/button_text</item> 
+  <item name="android:textSize">14sp</item> 
  </style>
-  
+ 
+ <style name="Button" parent="ButtonBase" />
+ 
+ <style name="GroupBoxBase">
+  <item name="android:layout_width">match_parent</item> 
+  <item name="android:layout_height">wrap_content</item>
+  <item name="android:layout_marginTop">8dp</item>
+  <item name="android:layout_marginBottom">0dp</item>
+  <item name="android:layout_marginLeft">12dp</item>
+  <item name="android:layout_marginRight">12dp</item>
+  <item name="labelColour">@color/groupbox_label</item>
+  <item name="labelTextSize">12sp</item>
+  <item name="labelMarginLeft">16dp</item>
+  <item name="labelMarginRight">16dp</item>
+  <item name="labelPaddingLeft">4dp</item>
+  <item name="labelPaddingRight">4dp</item>
+  <item name="cornerRadius">8dp</item>
+  <item name="strokeWidth">1dp</item>
+  <item name="strokeColour">@color/groupbox_border</item>    
+ </style>
+ 
+ <style name="GroupBox" parent="GroupBoxBase" />
+     
 </resources>

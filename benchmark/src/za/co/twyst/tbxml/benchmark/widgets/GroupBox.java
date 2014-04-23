@@ -1,6 +1,5 @@
 package za.co.twyst.tbxml.benchmark.widgets;
 
-import za.co.twyst.tbxml.benchmark.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -18,9 +17,11 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.View;
+import android.widget.FrameLayout;
 
-public class GroupBox extends View 
+import za.co.twyst.tbxml.benchmark.R;
+
+public class GroupBox extends FrameLayout 
        { // CONSTANTS
 
  		 private static final int LABEL_TEXT_SIZE     = 14;
@@ -54,7 +55,6 @@ public class GroupBox extends View
 
 	     private float textWidth  = 0;
 	     private float textMiddle = 0;
-//	     private float strokeY    = 0;
 
 	     // CLASS METHODS
 	
@@ -111,6 +111,7 @@ public class GroupBox extends View
 	    	       paint.setColor      (strokeColour);
 	    	       paint.setStyle      (Paint.Style.STROKE);
 	    	       paint.setStrokeWidth(strokeWidth);
+	    	       paint.setAntiAlias  (true);
 	    	       paint.setDither     (true);
 	    	       paint.setPathEffect (effect);
 	    	       paint.setStrokeJoin (Paint.Join.BEVEL);  
@@ -203,49 +204,45 @@ public class GroupBox extends View
 	     @Override
 	     protected void onLayout(boolean changed, int left, int top, int right,int bottom) 
 	               { super.onLayout(changed,left,top,right,bottom);
+
+	               	 int   w  = right  - left;
+	               	 int   h  = bottom - top;
+	               	 float tw = w - (labelMarginLeft + labelMarginRight + labelPaddingLeft + labelPaddingRight);
+	               	 float ty = text.getLineBaseline(0) - textMiddle; 
+	              
+	               	 if (tw < textWidth)
+	               	 	{ textWidth = tw;
+		    	          text      = new StaticLayout(label,
+                                                       0,
+                                                       label.length(),
+                                                       new TextPaint(paintx),
+                                                       10000,
+                                                       Layout.Alignment.ALIGN_NORMAL,
+                                                       1,
+                                                       0,
+                                                       true,
+                                                       TextUtils.TruncateAt.END,
+                                                       (int) textWidth);
+	               	 	}
+	              
+	               	 path.reset ();
+	               	 path.moveTo(labelMarginLeft,  ty);
+	               	 path.lineTo(strokeWidth/2,    ty);
+	               	 path.lineTo(strokeWidth/2,    h-1-strokeWidth/2);
+	               	 path.lineTo(w-1-strokeWidth/2,h-1-strokeWidth/2);
+	               	 path.lineTo(w-1-strokeWidth/2,ty);
+	               	 path.lineTo(labelMarginLeft + labelPaddingLeft + textWidth + labelPaddingRight - cornerRadius,ty);
 	               }
 
 	     @Override
-	     public void layout(int l, int t, int r, int b) 
-	            { super.layout(l,t,r,b);
-
-	              int   w  = r - l;
-	              int   h  = b - t;
-	              float tw = w - (labelMarginLeft + labelMarginRight + labelPaddingLeft + labelPaddingRight);
-	              float ty = text.getLineBaseline(0) - textMiddle; 
-	              
-	              if (tw < textWidth)
-	                 { textWidth = tw;
-		    	       text      = new StaticLayout(label,
-                                                    0,
-	                                                label.length(),
-	                                                new TextPaint(paintx),
-	                                                10000,
-	                                                Layout.Alignment.ALIGN_NORMAL,
-	                                                1,
-	                                                0,
-	                                                true,
-	                                                TextUtils.TruncateAt.END,
-	                                                (int) textWidth);
-	                 }
-
-	              
-	              path.reset ();
-	              path.moveTo(labelMarginLeft,  ty);
-	              path.lineTo(strokeWidth/2,    ty);
-	              path.lineTo(strokeWidth/2,    h-1-strokeWidth/2);
-	              path.lineTo(w-1-strokeWidth/2,h-1-strokeWidth/2);
-	              path.lineTo(w-1-strokeWidth/2,ty);
-	              path.lineTo(labelMarginLeft + labelPaddingLeft + textWidth + labelPaddingRight - cornerRadius,ty);
-	            }
-
-	     @Override
-	     protected void onDraw(Canvas canvas) 
+	     protected void dispatchDraw(Canvas canvas) 
 	               { canvas.save   ();
 	                 canvas.translate(labelMarginLeft + labelPaddingLeft,0);
 	                 text.draw     (canvas);
 	                 canvas.restore();
 	                 
 	                 canvas.drawPath(path,paint);
+	                 
+	                 super.dispatchDraw(canvas);
 	               }
        }

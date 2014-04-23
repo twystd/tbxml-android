@@ -13,4 +13,10 @@
   <attr name="strokeWidth"       format="dimension" />
   <attr name="strokeColour"      format="color"     />
  </declare-styleable>
+
+ <declare-styleable name="Grid">
+  <attr name="verticalSpacing"   format="dimension" />
+  <attr name="horizontalSpacing" format="dimension" />
+ </declare-styleable>
+
 </resources>

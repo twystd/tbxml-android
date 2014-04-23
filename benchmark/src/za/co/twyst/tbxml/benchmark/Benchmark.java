@@ -9,22 +9,22 @@ public class Benchmark
 	     @SuppressWarnings("unused")
 		 private static final String TAG = Benchmark.class.getSimpleName();
 	     
-	     public enum PARSER { XPATH(R.string.label_xpath),
-	    	                  DOM  (R.string.label_dom),
-	    	                  SAX  (R.string.label_sax),
-	    	                  TBXML(R.string.label_tbxml),
-	    	                  NDK  (R.string.label_ndk);
+	     public enum LABEL { XPATH(R.string.label_xpath),
+	    	                 DOM  (R.string.label_dom),
+	    	                 SAX  (R.string.label_sax),
+	    	                 TBXML(R.string.label_tbxml),
+	    	                 NDK  (R.string.label_ndk);
 	     
-	                          public final int label;
+	                         public final int label;
 	                          
-	                          private PARSER(int label)
-	                                  { this.label = label;
-	                                  }
-	     	                };
+	                         private LABEL(int label)
+	                                 { this.label = label;
+	                                 }
+	     	               };
 	     
 	     // INSTANCE VARIABLES
 	     
-	     public final PARSER parser;
+	     public final LABEL parser;
 	     
 	     private List<Long> array = new ArrayList<Long>();
 	     private Long       min;
@@ -34,7 +34,7 @@ public class Benchmark
 
 	     // CONSTRUCTOR
 	     
-	     public Benchmark(PARSER parser) 
+	     public Benchmark(LABEL parser) 
 	            { this.parser = parser;
 	            
 	              clear();

@@ -1,128 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:background="#ff444444"
+            xmlns:groupbox="http://schemas.android.com/apk/res/za.co.twyst.tbxml.benchmark"
+            xmlns:grid="http://schemas.android.com/apk/res/za.co.twyst.tbxml.benchmark"
+            android:background="@color/background_page"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:padding="0dp">
+
+ <RelativeLayout android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
     
- <RelativeLayout android:background="@drawable/background"
+  <!-- HEADER -->
+     
+  <RelativeLayout android:id="@+id/header"
+                  android:background="@color/background_header"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:padding="12dp">
+    
+   <TextView android:id="@+id/iterations_label"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="8dp"
+             android:layout_alignBaseline="@+id/iterations"
+             android:layout_alignParentLeft="true"
+             android:textColor="#ffffffff"
+             android:textSize="13sp" 
+             android:textStyle="normal"
+             android:text="@string/label_iterations" 
+             android:focusable="true"
+             android:focusableInTouchMode="true" />
+ 
+   <EditText android:id="@+id/iterations"
+             android:background="@drawable/loops"
+             android:layout_width="56sp"
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="12sp"
+             android:layout_alignParentTop="true"
+             android:layout_toRightOf="@+id/iterations_label"
+             android:gravity="center"
+             android:padding="0dp"
+             android:textColor="#ff404040"
+             android:textSize="13sp"
+             android:textCursorDrawable="@null"  
+             android:inputType="number" />
+  
+   <TextView android:id="@+id/size"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignBaseline="@+id/iterations"
+             android:layout_alignParentRight="true"
+             android:padding="4dp"
+             android:gravity="right"
+             android:textColor="#ffffffff"
+             android:textStyle="normal"
+             android:textSize="13sp"/>
+   
+   <TextView android:id="@+id/info"
+             android:background="@drawable/info"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="8dp"
+             android:layout_below="@+id/iterations"
+             android:layout_centerHorizontal="true"
+             android:paddingTop="4dp"
+             android:paddingBottom="4dp"
+             android:paddingLeft="12dp"
+             android:paddingRight="12dp"
+             android:textColor="#ff404040" 
+             android:textSize="13sp" />
+  </RelativeLayout>
+  
+  <!-- JDK -->
+  
+  <za.co.twyst.tbxml.benchmark.widgets.GroupBox
+      style="@style/GroupBox"
+      android:id="@+id/jdk"
+      android:layout_below="@+id/header"
+      groupbox:label="JDK">
+  
+   <LinearLayout android:id="@+id/jdkx"
+                 android:orientation="horizontal"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
-                 android:padding="12dp">
+                 android:paddingTop="20dp"
+                 android:paddingLeft="12dp"
+                 android:paddingRight="12dp"
+                 android:paddingBottom="12dp">
+    <Button style="@style/Button" 
+            android:id="@+id/xpath"
+            android:text="@string/xpath" 
+            android:onClick="onXPath" />
     
-  <TextView android:id="@+id/iterations_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_alignBaseline="@+id/iterations"
-            android:layout_alignParentLeft="true"
-            android:textColor="#ffffffff"
-            android:textSize="13sp" 
-            android:textStyle="normal"
-            android:text="@string/label_iterations" />
+    <Button style="@style/Button" 
+            android:id="@+id/dom"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:text="@string/dom" 
+            android:onClick="onDOM" />
+    
+    <Button style="@style/Button" 
+            android:id="@+id/sax"   
+            android:text="@string/sax" 
+            android:onClick="onSax" />
+   </LinearLayout>
+  </za.co.twyst.tbxml.benchmark.widgets.GroupBox>
  
-  <EditText android:id="@+id/iterations"
-            android:background="@drawable/loops"
-            android:layout_width="56sp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12sp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/iterations_label"
-            android:gravity="center"
-            android:padding="0dp"
-            android:textColor="#ff404040"
-            android:textSize="13sp"
-            android:textCursorDrawable="@null"  
-            android:inputType="number" />
- 
-  <TextView android:id="@+id/size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/iterations"
-            android:layout_alignParentRight="true"
-            android:padding="4dp"
-            android:gravity="right"
-            android:textColor="#ffffffff"
-            android:textStyle="normal"
-            android:textSize="13sp"/>
+  <!-- TBXML -->
   
-  <TextView android:id="@+id/info"
-            android:background="@drawable/info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_below="@+id/iterations"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:textColor="#ff404040" 
-            android:textSize="13sp" />
-  
-  <LinearLayout android:id="@+id/jdk"
+  <za.co.twyst.tbxml.benchmark.widgets.GroupBox
+      style="@style/GroupBox"
+      android:id="@+id/tbxml"
+      android:layout_below="@+id/jdk"
+      groupbox:label="TBXML">
+      
+   <LinearLayout android:id="@+id/tbxmlx"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/info">
-   <Button style="@style/ButtonX" 
-           android:id="@+id/xpath"
-           android:text="@string/xpath" 
-           android:onClick="onXPath" />
-   
-   <Button style="@style/ButtonX" 
-           android:id="@+id/dom"
-           android:layout_marginLeft="4dp"
-           android:layout_marginRight="4dp"
-           android:text="@string/dom" 
-           android:onClick="onDOM" />
-   
-   <Button style="@style/ButtonX" 
-           android:id="@+id/sax"   
-           android:text="@string/sax" 
-           android:onClick="onSax" />
-  </LinearLayout>
-
-  <LinearLayout android:id="@+id/tbxml"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/jdk">
-  
-   <Button style="@style/ButtonX"
-           android:id="@+id/java"
-           android:layout_width="0dp" 
-           android:layout_weight="1" 
-           android:layout_marginRight="4dp"
-           android:text="@string/tbxml" 
-           android:onClick="onTBXML" />
+                android:paddingTop="20dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="12dp">
+       
+    <Button style="@style/Button"
+            android:id="@+id/java"
+            android:layout_width="0dp" 
+            android:layout_weight="1" 
+            android:layout_marginRight="4dp"
+            android:text="@string/tbxml" 
+            android:onClick="onTBXML" />
  
-   <Button style="@style/ButtonX"
-           android:id="@+id/c"
-           android:layout_width="0dp" 
-           android:layout_weight="1" 
-           android:layout_marginLeft="4dp"
-           android:text="@string/ndk" 
-           android:onClick="onNDK"/>
-  </LinearLayout>
+    <Button style="@style/Button"
+            android:id="@+id/c"
+            android:layout_width="0dp" 
+            android:layout_weight="1" 
+            android:layout_marginLeft="4dp"
+            android:text="@string/ndk" 
+            android:onClick="onNDK"/>
+   </LinearLayout>
+  </za.co.twyst.tbxml.benchmark.widgets.GroupBox>
 
-  <GridView android:id="@+id/grid"
-            android:background="@drawable/grid"
-            android:layout_width="match_parent"
-            android:layout_height="148dp"
-            android:layout_marginTop="12dp"
-            android:layout_below="@+id/tbxml"
-            android:layout_centerHorizontal="true"
-            android:isScrollContainer="false"
-            android:numColumns="5"
-            android:verticalSpacing="2dp"
-            android:horizontalSpacing="2dp"
-            android:stretchMode="columnWidth" />
+  <za.co.twyst.tbxml.benchmark.widgets.Grid
+      android:id="@+id/gridx"
+      android:background="@drawable/grid"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      android:layout_marginBottom="12dp"
+      android:layout_marginLeft="12dp"
+      android:layout_marginRight="12dp"
+      android:layout_below="@+id/tbxml"
+      android:layout_centerHorizontal="true" 
+      grid:verticalSpacing="2dp"
+      grid:horizontalSpacing="2dp" />
   
   <ProgressBar style="@android:style/Widget.ProgressBar.Large"
                android:id="@+id/windmill"
@@ -130,8 +162,7 @@
                android:layout_height="wrap_content"
                android:layout_centerInParent="true" 
                android:visibility="gone" />
- </RelativeLayout>
  
+</RelativeLayout>
 </ScrollView>
-
     

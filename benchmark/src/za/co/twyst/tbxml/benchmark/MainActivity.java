@@ -8,53 +8,55 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import za.co.twyst.tbxml.benchmark.Benchmark.PARSER;
+import za.co.twyst.tbxml.benchmark.Benchmark.LABEL;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
 import za.co.twyst.tbxml.benchmark.parsers.java.JAVA;
 import za.co.twyst.tbxml.benchmark.parsers.jdk.DOM;
 import za.co.twyst.tbxml.benchmark.parsers.jdk.XPATH;
 import za.co.twyst.tbxml.benchmark.parsers.jdk.SAX;
 import za.co.twyst.tbxml.benchmark.parsers.ndk.NDK;
+import za.co.twyst.tbxml.benchmark.widgets.Grid;
 
-import static za.co.twyst.tbxml.benchmark.Benchmark.PARSER.XPATH;
-import static za.co.twyst.tbxml.benchmark.Benchmark.PARSER.DOM;
-import static za.co.twyst.tbxml.benchmark.Benchmark.PARSER.SAX;
-import static za.co.twyst.tbxml.benchmark.Benchmark.PARSER.TBXML;
-import static za.co.twyst.tbxml.benchmark.Benchmark.PARSER.NDK;
+import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.XPATH;
+import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.DOM;
+import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.SAX;
+import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.TBXML;
+import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.NDK;
 
 public class MainActivity extends Activity
        { // CONSTANTS
 	
-	     private static final String   TAG        = MainActivity.class.getSimpleName();
-	     private static final int      ITERATIONS = 10;
-	     private static final PARSER[] PARSERS    = { XPATH,DOM,SAX,TBXML,NDK };
-	     private static final int[]    WIDGETS    = { R.id.iterations,
-	    	                                        R.id.info,
-	    	 	                                    R.id.xpath,
-	    	 	                                    R.id.dom,
-	    	 	                                    R.id.sax,
-	    	 	                                    R.id.java,
-	    	 	                                    R.id.c
-	                                              };
-       
+	     private static final String  TAG        = MainActivity.class.getSimpleName();
+	     private static final int     ITERATIONS = 10;
+	     private static final LABEL[] PARSERS    = { XPATH,DOM,SAX,TBXML,NDK };
+	     private static final int[]   ROWS       = { XPATH.label,DOM.label,SAX.label,TBXML.label,NDK.label    };
+	     private static final int[]   COLUMNS    = { R.string.min,R.string.average,R.string.max,R.string.runs };
+	     private static final int[]   WIDGETS    = { R.id.iterations,
+	    	                                         R.id.info,
+	    	 	                                     R.id.xpath,
+	    	 	                                     R.id.dom,
+	    	 	                                     R.id.sax,
+	    	 	                                     R.id.java,
+	    	 	                                     R.id.c
+	                                               };
+
 	     // INSTANCE VARIABLES
 	     
-	     private TextView         info;
-         private EditText         iterations;
-         private TextView         size;
-	     private ProgressBar      windmill;
-	     private View[]           widgets;
-	     private GridView         grid;
-	     private BenchmarkAdapter adapter;
-	     private String           xml;
-	     
+	     private TextView    info;
+         private EditText    iterations;
+         private TextView    size;
+	     private ProgressBar windmill;
+	     private View[]      widgets;
+	     private Grid        gridx;
+	     private String      xml;
+	     private Benchmark[] benchmarks;
+
 	     // CLASS METHODS
 	     
 	     private static void close(Closeable stream)
@@ -74,24 +76,37 @@ public class MainActivity extends Activity
 
                   setContentView(R.layout.tbxml);
                   
+                  // ... initialise
+                  
+	              benchmarks = new Benchmark[PARSERS.length];
+	              
+	              for (int i=0; i<PARSERS.length; i++)
+	                  { benchmarks[i] = new Benchmark(PARSERS[i]);
+	                  }
+
+	              // ... initialise widgets
+	              
                   info       = (TextView) findViewById(R.id.info);
                   iterations = (EditText) findViewById(R.id.iterations);
                   size       = (TextView) findViewById(R.id.size);
 
                   windmill   = (ProgressBar) findViewById(R.id.windmill);
-                  grid       = (GridView) findViewById(R.id.grid);
-                  adapter    = new BenchmarkAdapter(getLayoutInflater(),PARSERS);
+                  gridx      = (Grid) findViewById(R.id.gridx);
                   widgets    = new View[WIDGETS.length];
                   
                   for (int i=0; i<WIDGETS.length; i++)
                       { widgets[i] = findViewById(WIDGETS[i]);
                       }
                   
-                  grid.setAdapter(adapter);
-
+                  // ... initialise grid
+                  
+                  gridx.setRowLabels   (ROWS,   getLayoutInflater(),R.layout.label,R.id.textview);
+                  gridx.setColumnLabels(COLUMNS,getLayoutInflater(),R.layout.value,R.id.textview);
+                  gridx.setValues      (ROWS.length,COLUMNS.length,getLayoutInflater(),R.layout.value,R.id.textview);
+                  
                   // ... preload XML
                   
-                  Reader in = new InputStreamReader(getResources().openRawResource(R.raw.routes));
+                  Reader in = new InputStreamReader(getResources().openRawResource(R.raw.db));
                   
                   try
                       { StringBuilder string = new StringBuilder();
@@ -111,10 +126,6 @@ public class MainActivity extends Activity
                      { close(in);
                      }
 
-                  // ... clear measurement arrays
-                  
-                  adapter.clear();
-                  
                   // ... initialise widgets
                   
                   iterations.setText(Integer.toString(ITERATIONS));
@@ -124,33 +135,38 @@ public class MainActivity extends Activity
          // INSTANCE METHODS
          
          public void onXPath(View v)
-                { new ParseTask(XPATH,
+                { new ParseTask(getString(XPATH.label),
                                 new XPATH(xml),
-                                loops()).execute();
+                                loops(),
+                                0).execute();
                 }
          
          public void onDOM(View v)
-                { new ParseTask(DOM,
+                { new ParseTask(getString(DOM.label),
                                 new DOM(xml),
-                                loops()).execute();
+                                loops(),
+                                1).execute();
                 }
          
          public void onSax(View v)
-                { new ParseTask(SAX,
+                { new ParseTask(getString(SAX.label),
                                 new SAX(xml),
-                                loops()).execute();
+                                loops(),
+                                2).execute();
                 }
 
          public void onTBXML(View v)
-                { new ParseTask(TBXML,
+                { new ParseTask(getString(TBXML.label),
                                 new JAVA(xml),
-                                loops()).execute();
+                                loops(),
+                                3).execute();
                 }
 
          public void onNDK(View v)
-                { new ParseTask(NDK,
+                { new ParseTask(getString(NDK.label),
                                 new NDK(xml),
-                                loops()).execute();
+                                loops(),
+                                4).execute();
                 }
          
          // IMPLEMENTATION
@@ -173,18 +189,19 @@ public class MainActivity extends Activity
          // INNER CLASSES
          
          private class ParseTask extends AsyncTask<Void,Void,Long>
-                 { private final PARSER benchmark;
-        	       private final String id;
+                 { private final String id;
         	       private final Parser parser;
         	       private final int    loops;
+        	       private final int    row;
                  
-                   public ParseTask(PARSER benchmark,
-                                    Parser parser,
-                                    int    loops)
-                          { this.benchmark = benchmark;
-                            this.id        = getString(benchmark.label);
-                	        this.parser    = parser;
-                	        this.loops     = loops;
+                   public ParseTask(String label,
+                		            Parser parser,
+                                    int    loops,
+                                    int    row)
+                          { this.id     = label;
+                	        this.parser = parser;
+                	        this.loops  = loops;
+                	        this.row    = row;
                           }
 
         	       @Override
@@ -225,8 +242,16 @@ public class MainActivity extends Activity
 
         	                    // ... update statistics
        	                    
-        	                    info.setText  (String.format("%s: %d ms",id,result.longValue()));
-        	                    adapter.update(benchmark,result/loops);
+        	                    Benchmark benchmark = benchmarks[row];
+        	                    
+        	                    info.setText(String.format("%s: %d ms",id,result.longValue()));
+        	                    
+        	                    benchmark.update(result/loops);
+        	                    
+        	                    gridx.setValue(row,0,benchmark.min());
+        	                    gridx.setValue(row,1,benchmark.average());
+   	                         	gridx.setValue(row,2,benchmark.max());
+   	                         	gridx.setValue(row,3,benchmark.runs());
         	                  }
                  }
        }

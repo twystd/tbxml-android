@@ -1,6 +1,6 @@
 package za.co.twyst.tbxml.benchmark;
 
-import za.co.twyst.tbxml.benchmark.Benchmark.PARSER;
+import za.co.twyst.tbxml.benchmark.Benchmark.LABEL;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +26,7 @@ public class BenchmarkAdapter extends BaseAdapter
 	     
 	     // CONSTRUCTOR
 	     
-	     public BenchmarkAdapter(LayoutInflater inflater,PARSER[] parsers)
+	     public BenchmarkAdapter(LayoutInflater inflater,LABEL[] parsers)
 	            { this.inflater   = inflater;
 	              this.benchmarks = new Benchmark[parsers.length];
 	              
@@ -43,14 +43,22 @@ public class BenchmarkAdapter extends BaseAdapter
 	                 }
 	            }
 	     
-	     public void update(PARSER parser,long dt) 
-	            { for (Benchmark benchmark: benchmarks)
-	                  { if (benchmark.parser == parser)
-	                       { benchmark.update(dt);
+	     public Benchmark update(LABEL parser,long dt) 
+	            { Benchmark benchmark = null;
+	            
+	    	      for (Benchmark item: benchmarks)
+	                  { if (item.parser == parser)
+	                       { benchmark = item;
+	                         break;
 	                       }
 	                  }
 	            
-	              notifyDataSetChanged();
+	    	      if (benchmark != null)
+	    	         { benchmark.update(dt);
+	    	           notifyDataSetChanged();
+	    	         }
+	    	      
+	    	      return benchmark;
 	            }
 
 		 // *** BaseAdapter ***

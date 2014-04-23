@@ -3,7 +3,7 @@
 	<name>TBXML - test</name>
 	<comment></comment>
 	<projects>
-		<project>TBXML - dummy</project>
+		<project>TBXML - benchmark</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

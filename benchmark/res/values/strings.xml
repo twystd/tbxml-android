@@ -5,8 +5,8 @@
  <string name="xpath">XPath</string>
  <string name="dom">DOM</string>
  <string name="sax">SAX</string>
- <string name="tbxml">TBXML/Java</string>
- <string name="ndk">TBXML/native</string>
+ <string name="tbxml">Java</string>
+ <string name="ndk">Native</string>
  
  <string name="label_iterations">Loops:</string>
  <string name="label_xpath">XPath:</string>

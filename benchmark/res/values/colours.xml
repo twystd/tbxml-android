@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+ <color name="background_page">#fff0f0f0</color>    
+ <color name="background_header">#ff436eb4</color>    
+ <color name="groupbox_label">#ff436eb4</color>    
+ <color name="groupbox_border">#ff436eb4</color>    
+ <color name="button_background">#ff436eb4</color>    
+ <color name="button_text">#ffffffff</color>    
+</resources>

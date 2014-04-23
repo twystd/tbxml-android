@@ -2,19 +2,11 @@ package za.co.twyst.tbxml.test;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 
 import android.content.Context;
 import android.test.AndroidTestCase;
 
-import za.co.twyst.tbxml.dummy.R;
+import za.co.twyst.tbxml.benchmark.R;
 import za.co.twyst.tbxml.TBXML;
 
 public class TestAPI extends AndroidTestCase
@@ -23,17 +15,16 @@ public class TestAPI extends AndroidTestCase
 	     @SuppressWarnings("unused")
 		 private static final String TAG         = "TBXML";
 	     private static final String DESCRIPTION = "Takes the vague slightly right-slanting break about 3m left of the large chimney filled with chockstones.";
+	     private static final int    TESTXML     = R.raw.test;
 	     
 	     // TEST VARIABLES
 	     
 	     private TBXML tbxml;
-	     private XPath xpath;
 
 	     // SETUP/TEARDOWN
 
 	     protected void setUp() throws Exception 
 	               { tbxml = new TBXML();
-	                 xpath = XPathFactory.newInstance().newXPath();
 	               }
 
 	     protected void tearDown() throws Exception 
@@ -43,35 +34,38 @@ public class TestAPI extends AndroidTestCase
 	     // UNIT TESTS
 	
 	     public void testParse() throws Exception
-	            { String      xml = read(R.raw.routesx);
-	              InputSource source  = new InputSource(new StringReader(xml));
+	            { String xml = read(TESTXML);
 
 	              tbxml.parse(xml);
 	              
-	              Node xpathRoot = (Node) xpath.evaluate("/routes",source,XPathConstants.NODE);
-	              long tbxmlRoot = tbxml.rootXMLElement();         
+	              long root = tbxml.rootXMLElement();         
 	              
-	              assertTrue("Invalid 'root' element",tbxmlRoot != 0);
+	              assertTrue  ("Invalid 'root' element",root != 0);
+	              assertEquals("Invalid 'root' element tag","routes",tbxml.elementName(root));
 	              
-	              long tbxmlSection = tbxml.firstChild (tbxmlRoot);        
+	              long section = tbxml.firstChild (root);        
 	              
-	              assertTrue("Invalid 'section' element",tbxmlSection != 0);
+	              assertTrue  ("Invalid 'section' element",section != 0);
+	              assertEquals("Invalid 'section' element tag","section",tbxml.elementName(section));
 	              
-                  long tbxmlRoute = tbxml.firstChild (tbxmlSection);     
+                  long route = tbxml.firstChild (section);     
                   
-                  assertTrue("Invalid 'route' element",tbxmlRoute != 0);
+                  assertTrue  ("Invalid 'route' element",route != 0);
+	              assertEquals("Invalid 'route' element tag","route",tbxml.elementName(route));
                   
-                  long tbxmlDescription = tbxml.firstChild (tbxmlRoute);       
+                  long description = tbxml.firstChild (route);       
                   
-                  assertTrue("Invalid 'description' element", tbxmlDescription != 0);
+                  assertTrue  ("Invalid 'description' element",description != 0);
+	              assertEquals("Invalid 'description' element tag","description",tbxml.elementName(description));
+
+                  long firstAscent = tbxml.nextSibling(description); 
                   
-                  long tbxmlFirstAscent = tbxml.nextSibling(tbxmlDescription); 
-                  
-                  assertTrue("Invalid 'first ascent' element",tbxmlFirstAscent != 0);
+                  assertTrue  ("Invalid 'first-ascent' element",firstAscent != 0);
+	              assertEquals("Invalid 'first-ascent' element tag","first-ascent",tbxml.elementName(firstAscent));
 	            }
 	     
          public void testChildElementNamed() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
                   
                   tbxml.parse(xml);
                   
@@ -88,7 +82,7 @@ public class TestAPI extends AndroidTestCase
                 }
          
          public void testNextSiblingNamed() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
            
                   tbxml.parse(xml);
            
@@ -112,7 +106,7 @@ public class TestAPI extends AndroidTestCase
                 }
 	     
          public void testElementName() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
                   
                   tbxml.parse(xml);
                   
@@ -130,7 +124,7 @@ public class TestAPI extends AndroidTestCase
                 }
 
          public void testValueOfAttributeNamed() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
                   
                   tbxml.parse(xml);
                   
@@ -153,7 +147,7 @@ public class TestAPI extends AndroidTestCase
                 }
 
          public void testTextForElement() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
                   
                   tbxml.parse(xml);
                   
@@ -167,7 +161,7 @@ public class TestAPI extends AndroidTestCase
                 }
 
          public void testListElementsForQuery() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
            
                    tbxml.parse(xml);
            
@@ -183,7 +177,7 @@ public class TestAPI extends AndroidTestCase
                 }
 
          public void testListElementsForWildcardQuery() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
     
                   tbxml.parse(xml);
     
@@ -198,7 +192,7 @@ public class TestAPI extends AndroidTestCase
                 }
 
          public void testListElementsForEmbeddedWildcardQuery() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
            
                    tbxml.parse(xml);
 
@@ -217,7 +211,7 @@ public class TestAPI extends AndroidTestCase
                 }
 
          public void testListAttributesForElements() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
            
                    tbxml.parse(xml);
            
@@ -238,7 +232,7 @@ public class TestAPI extends AndroidTestCase
                 }
 
          public void testAttributeName() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
            
                    tbxml.parse(xml);
            
@@ -281,7 +275,7 @@ public class TestAPI extends AndroidTestCase
                 }
 
          public void testAttributeValue() throws Exception
-                { String xml = read(R.raw.routesx);
+                { String xml = read(TESTXML);
            
                    tbxml.parse(xml);
            
