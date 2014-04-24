@@ -101,6 +101,9 @@ public class GroupBox extends FrameLayout
 	    	          { parse(context,attributes);
 	    	          }
 		
+	    	       labelMarginLeft  = Math.max(labelMarginLeft, cornerRadius);
+	    	       labelMarginRight = Math.max(labelMarginRight,cornerRadius);
+	    	       
 	    	       // ... initialise paint and path
 		
 	    	       effect = new CornerPathEffect(cornerRadius);
@@ -114,7 +117,7 @@ public class GroupBox extends FrameLayout
 	    	       paint.setAntiAlias  (true);
 	    	       paint.setDither     (true);
 	    	       paint.setPathEffect (effect);
-	    	       paint.setStrokeJoin (Paint.Join.BEVEL);  
+	    	       paint.setStrokeJoin (Paint.Join.ROUND);  
 	    	       paint.setStrokeCap  (Paint.Cap.BUTT);  
 
 	    	       paintx.setColor    (labelColour);
