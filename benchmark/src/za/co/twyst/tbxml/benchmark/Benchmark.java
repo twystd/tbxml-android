@@ -9,11 +9,13 @@ public class Benchmark
 	     @SuppressWarnings("unused")
 		 private static final String TAG = Benchmark.class.getSimpleName();
 	     
-	     public enum LABEL { XPATH(R.string.label_xpath),
-	    	                 DOM  (R.string.label_dom),
-	    	                 SAX  (R.string.label_sax),
-	    	                 TBXML(R.string.label_tbxml),
-	    	                 NDK  (R.string.label_ndk);
+	     public enum LABEL { XPATH    (R.string.label_xpath),
+	    	                 DOM      (R.string.label_dom),
+	    	                 SAX      (R.string.label_sax),
+	    	                 TBXML    (R.string.label_tbxml),
+	    	                 NDK      (R.string.label_ndk),
+	    	                 VTD      (R.string.label_vtd),
+	    	                 VTD_XPATH(R.string.label_vtd_xpath);
 	     
 	                         public final int label;
 	                          

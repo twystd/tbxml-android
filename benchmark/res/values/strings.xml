@@ -7,6 +7,8 @@
  <string name="sax">SAX</string>
  <string name="tbxml">Java</string>
  <string name="ndk">Native</string>
+ <string name="vtd">VTD</string>
+ <string name="vtd_xpath">XPath</string>
  
  <string name="label_iterations">Loops:</string>
  <string name="label_xpath">XPath:</string>
@@ -14,6 +16,8 @@
  <string name="label_sax">SAX:</string>
  <string name="label_tbxml">TBMXL:</string>
  <string name="label_ndk">Native:</string>
+ <string name="label_vtd">VTD:</string>
+ <string name="label_vtd_xpath">VTD/XPath:</string>
  
  <string name="blank"></string>
  <string name="min">Min</string>

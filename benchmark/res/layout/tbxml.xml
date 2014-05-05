@@ -9,7 +9,8 @@
             android:padding="0dp">
 
  <RelativeLayout android:layout_width="match_parent"
-                 android:layout_height="wrap_content">
+                 android:layout_height="wrap_content"
+                 android:paddingBottom="12dp">
     
   <!-- HEADER -->
      
@@ -17,7 +18,10 @@
                   android:background="@color/background_header"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:padding="12dp">
+                  android:paddingTop="20dp"
+                  android:paddingBottom="12dp"
+                  android:paddingLeft="12dp"
+                  android:paddingRight="12dp">
     
    <TextView android:id="@+id/iterations_label"
              android:layout_width="wrap_content"
@@ -69,7 +73,8 @@
              android:paddingLeft="12dp"
              android:paddingRight="12dp"
              android:textColor="#ff404040" 
-             android:textSize="13sp" />
+             android:textSize="13sp" 
+             android:visibility="gone" />
   </RelativeLayout>
   
   <!-- JDK -->
@@ -106,23 +111,56 @@
             android:onClick="onSax" />
    </LinearLayout>
   </za.co.twyst.tbxml.benchmark.widgets.GroupBox>
+
+  <!-- VTD -->
+  
+  <za.co.twyst.tbxml.benchmark.widgets.GroupBox
+      style="@style/GroupBox"
+      android:id="@+id/vtd"
+      android:layout_below="@+id/jdk"
+      groupbox:label="VTD">
+      
+   <LinearLayout android:orientation="horizontal"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:paddingTop="20dp"
+                 android:paddingLeft="12dp"
+                 android:paddingRight="12dp"
+                 android:paddingBottom="12dp">
+       
+    <Button style="@style/Button"
+            android:id="@+id/vtd_std"
+            android:layout_width="0dp" 
+            android:layout_weight="1" 
+            android:layout_marginRight="4dp"
+            android:text="@string/vtd" 
+            android:onClick="onVTD" />
  
+    <Button style="@style/Button"
+            android:id="@+id/vtd_xpath"
+            android:layout_width="0dp" 
+            android:layout_weight="1" 
+            android:layout_marginLeft="4dp"
+            android:text="@string/vtd_xpath" 
+            android:onClick="onVTDXPath"/>
+    </LinearLayout>
+  </za.co.twyst.tbxml.benchmark.widgets.GroupBox>
+  
   <!-- TBXML -->
   
   <za.co.twyst.tbxml.benchmark.widgets.GroupBox
       style="@style/GroupBox"
       android:id="@+id/tbxml"
-      android:layout_below="@+id/jdk"
+      android:layout_below="@+id/vtd"
       groupbox:label="TBXML">
       
-   <LinearLayout android:id="@+id/tbxmlx"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingBottom="12dp">
+   <LinearLayout android:orientation="horizontal"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:paddingTop="20dp"
+                 android:paddingLeft="12dp"
+                 android:paddingRight="12dp"
+                 android:paddingBottom="12dp">
        
     <Button style="@style/Button"
             android:id="@+id/java"
@@ -139,9 +177,9 @@
             android:layout_marginLeft="4dp"
             android:text="@string/ndk" 
             android:onClick="onNDK"/>
-   </LinearLayout>
+    </LinearLayout>
   </za.co.twyst.tbxml.benchmark.widgets.GroupBox>
-
+  
   <za.co.twyst.tbxml.benchmark.widgets.Grid
       android:id="@+id/gridx"
       android:background="@drawable/grid"

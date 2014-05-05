@@ -21,6 +21,8 @@ import za.co.twyst.tbxml.benchmark.parsers.jdk.DOM;
 import za.co.twyst.tbxml.benchmark.parsers.jdk.XPATH;
 import za.co.twyst.tbxml.benchmark.parsers.jdk.SAX;
 import za.co.twyst.tbxml.benchmark.parsers.ndk.NDK;
+import za.co.twyst.tbxml.benchmark.parsers.vtd.VTD;
+import za.co.twyst.tbxml.benchmark.parsers.vtd.VTDXPath;
 import za.co.twyst.tbxml.benchmark.widgets.Grid;
 
 import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.XPATH;
@@ -28,14 +30,16 @@ import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.DOM;
 import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.SAX;
 import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.TBXML;
 import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.NDK;
+import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.VTD;
+import static za.co.twyst.tbxml.benchmark.Benchmark.LABEL.VTD_XPATH;
 
 public class MainActivity extends Activity
        { // CONSTANTS
 	
 	     private static final String  TAG        = MainActivity.class.getSimpleName();
 	     private static final int     ITERATIONS = 10;
-	     private static final LABEL[] PARSERS    = { XPATH,DOM,SAX,TBXML,NDK };
-	     private static final int[]   ROWS       = { XPATH.label,DOM.label,SAX.label,TBXML.label,NDK.label    };
+	     private static final LABEL[] PARSERS    = { XPATH,DOM,SAX,VTD,VTD_XPATH,TBXML,NDK };
+	     private static final int[]   ROWS       = { XPATH.label,DOM.label,SAX.label,VTD.label,VTD_XPATH.label,TBXML.label,NDK.label };
 	     private static final int[]   COLUMNS    = { R.string.min,R.string.average,R.string.max,R.string.runs };
 	     private static final int[]   WIDGETS    = { R.id.iterations,
 	    	                                         R.id.info,
@@ -43,7 +47,8 @@ public class MainActivity extends Activity
 	    	 	                                     R.id.dom,
 	    	 	                                     R.id.sax,
 	    	 	                                     R.id.java,
-	    	 	                                     R.id.c
+	    	 	                                     R.id.c,
+	    	 	                                     R.id.vtd
 	                                               };
 
 	     // INSTANCE VARIABLES
@@ -155,18 +160,32 @@ public class MainActivity extends Activity
                                 2).execute();
                 }
 
+         public void onVTD(View v)
+                { new ParseTask(getString(NDK.label),
+                                new VTD(xml),
+                                loops(),
+                                3).execute();
+                }
+
+         public void onVTDXPath(View v)
+                { new ParseTask(getString(NDK.label),
+                                new VTDXPath(xml),
+                                loops(),
+                                4).execute();
+                }
+
          public void onTBXML(View v)
                 { new ParseTask(getString(TBXML.label),
                                 new JAVA(xml),
                                 loops(),
-                                3).execute();
+                                5).execute();
                 }
 
          public void onNDK(View v)
                 { new ParseTask(getString(NDK.label),
                                 new NDK(xml),
                                 loops(),
-                                4).execute();
+                                6).execute();
                 }
          
          // IMPLEMENTATION

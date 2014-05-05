@@ -141,7 +141,7 @@ public class GroupBox extends FrameLayout
 	    	    		                             0,
 	    	    		                             true,
 	    	    		                             TextUtils.TruncateAt.END,
-	    	    		                             (int) textWidth);
+	    	    		                             (int) textWidth + 1);
 	             }
 	
 	     private void parse(Context context,AttributeSet attributes) 
@@ -225,7 +225,7 @@ public class GroupBox extends FrameLayout
                                                        0,
                                                        true,
                                                        TextUtils.TruncateAt.END,
-                                                       (int) textWidth);
+                                                       (int) textWidth + 1);
 	               	 	}
 	              
 	               	 path.reset ();
