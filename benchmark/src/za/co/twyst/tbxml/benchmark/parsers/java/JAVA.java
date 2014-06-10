@@ -5,12 +5,12 @@ import java.util.List;
 
 import android.util.Log;
 
-import za.co.twyst.tbxml.benchmark.db.Route;
+import za.co.twyst.tbxml.benchmark.db.Item;
 import za.co.twyst.tbxml.benchmark.db.Section;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
 import za.co.twyst.tbxml.benchmark.parsers.java.TBXML.TBXMLElement;
 
-public class JAVA implements Parser 
+public class JAVA extends Parser 
        { // CONSTANTS
     
 		 private static final String TAG = JAVA.class.getSimpleName();
@@ -38,12 +38,12 @@ public class JAVA implements Parser
                         TBXMLElement  child    = root.firstChild;
                         
                         while (child != null)
-                              { if ("section".equals(tbxml.elementName(child)))
-                                   { String      id      = tbxml.valueOfAttributeForElement("id",  child);
-                                     String      name    = tbxml.valueOfAttributeForElement("name",child);
-                                     String      order   = tbxml.valueOfAttributeForElement("order",child);
-                                     List<Route> routes  = parse(tbxml,child);
-                                     Section     section = new Section(id,name,order,routes);
+                              { if (SECTION.equals(tbxml.elementName(child)))
+                                   { String      id      = tbxml.valueOfAttributeForElement(ID,  child);
+                                     String      name    = tbxml.valueOfAttributeForElement(NAME,child);
+                                     String      order   = tbxml.valueOfAttributeForElement(ORDER,child);
+                                     List<Item>  items   = parse(tbxml,child);
+                                     Section     section = new Section(id,name,order,items);
 
                                      sections.add(section);
                                    }
@@ -53,49 +53,49 @@ public class JAVA implements Parser
                               }
 
                         for (Section section: sections)
-                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
+                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.items.size()));
                             }
                       }
 	             
                   return System.currentTimeMillis() - start;
                 }
          
-         private List<Route> parse(TBXML tbxml,TBXMLElement section) throws Exception 
-                 { List<Route>  routes = new ArrayList<Route>();
-                   TBXMLElement child  = section.firstChild;
+         private List<Item> parse(TBXML tbxml,TBXMLElement section) throws Exception 
+                 { List<Item>  items  = new ArrayList<Item>();
+                   TBXMLElement child = section.firstChild;
                    
                    while (child != null)
-                         { if ("route".equals(tbxml.elementName(child)))
-                              { String       id          = tbxml.valueOfAttributeForElement("id",   child);
-                                String       name        = tbxml.valueOfAttributeForElement("name", child);
-                                String       grade       = tbxml.valueOfAttributeForElement("grade",child);
-                                String       stars       = tbxml.valueOfAttributeForElement("stars",child);
-                                String       bolts       = tbxml.valueOfAttributeForElement("bolts",child);
-                                String       order       = tbxml.valueOfAttributeForElement("order",child);
-                                String       description = tbxml.textForElement(tbxml.childElement("description",child));
-                                Route        route       = new Route(id,name,grade,stars,bolts,order,description);
+                         { if (ITEM.equals(tbxml.elementName(child)))
+                              { String       id          = tbxml.valueOfAttributeForElement(ID,   child);
+                                String       name        = tbxml.valueOfAttributeForElement(NAME, child);
+                                String       grade       = tbxml.valueOfAttributeForElement(GRADE,child);
+                                String       stars       = tbxml.valueOfAttributeForElement(STARS,child);
+                                String       rated       = tbxml.valueOfAttributeForElement(RATED,child);
+                                String       order       = tbxml.valueOfAttributeForElement(ORDER,child);
+                                String       description = tbxml.textForElement(tbxml.childElement(DESCRIPTION,child));
+                                Item         item        = new Item(id,name,grade,stars,rated,order,description);
                                 TBXMLElement optional;
 
-                                if ((optional = tbxml.childElement("first-ascent",child)) != null)
-                                   { String by   = tbxml.valueOfAttributeForElement("by",  optional);
-                                     String date = tbxml.valueOfAttributeForElement("date",optional);
+                                if ((optional = tbxml.childElement(ORIGINATED,child)) != null)
+                                   { String by   = tbxml.valueOfAttributeForElement(BY,  optional);
+                                     String date = tbxml.valueOfAttributeForElement(DATE,optional);
                                 
-                                     route.firstAscent = new Route.FirstAscent(by,date);
+                                     item.originated = new Item.Originated(by,date);
                                    }
 
-                                if ((optional = tbxml.childElement("bolted",child)) != null)
-                                   { String by   = tbxml.valueOfAttributeForElement("by",  optional);
-                                     String date = tbxml.valueOfAttributeForElement("date",optional);
+                                if ((optional = tbxml.childElement(CHECKED,child)) != null)
+                                   { String by   = tbxml.valueOfAttributeForElement(BY,  optional);
+                                     String date = tbxml.valueOfAttributeForElement(DATE,optional);
                                 
-                                     route.bolted = new Route.Bolted(by,date);
+                                     item.checked = new Item.Checked(by,date);
                                    }
                                 
-                                routes.add(route);
+                                items.add(item);
                               }
                          
                            child = child.nextSibling;
                          }
 
-                   return routes;
+                   return items;
                  }
        }

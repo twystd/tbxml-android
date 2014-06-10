@@ -16,11 +16,11 @@ import org.xml.sax.InputSource;
 
 import android.util.Log;
 
-import za.co.twyst.tbxml.benchmark.db.Route;
+import za.co.twyst.tbxml.benchmark.db.Item;
 import za.co.twyst.tbxml.benchmark.db.Section;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
 
-public class DOM implements Parser 
+public class DOM extends Parser 
        { // CONSTANTS
     
 		 private static final String TAG = DOM.class.getSimpleName();
@@ -52,7 +52,7 @@ public class DOM implements Parser
           }
 
 		private static String description(Element element) {
-        	 NodeList nodelist = element.getElementsByTagName("description");
+        	 NodeList nodelist = element.getElementsByTagName(DESCRIPTION);
         	 
         	 for (int i=0; i<nodelist.getLength();) {
         		 return nodelist.item(i).getTextContent();
@@ -81,62 +81,62 @@ public class DOM implements Parser
                         InputSource    source   = new InputSource(new StringReader(xml));
                         Document       document = builder.parse(source);
                         Element        root     = document.getDocumentElement();
-                        NodeList       nodes    = root.getElementsByTagName("section");
+                        NodeList       nodes    = root.getElementsByTagName(SECTION);
                         
                         for (int j=0; j<nodes.getLength(); j++)
                             { Node         node       = nodes.item(j);
                               NamedNodeMap attributes = node.getAttributes();
-                              String      id          = attributes.getNamedItem("id").getTextContent();
-                              String      name        = attributes.getNamedItem("name").getTextContent();
-                              String      order       = attributes.getNamedItem("order").getTextContent();
-                              List<Route> routes      = parse((Element) node);
-                              Section     section     = new Section(id,name,order,routes);
+                              String      id          = attributes.getNamedItem(ID).getTextContent();
+                              String      name        = attributes.getNamedItem(NAME).getTextContent();
+                              String      order       = attributes.getNamedItem(ORDER).getTextContent();
+                              List<Item>  items       = parse((Element) node);
+                              Section     section     = new Section(id,name,order,items);
                               
                               sections.add(section);
                             }
 
                         for (Section section: sections)
-                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
+                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.items.size()));
                             }
                       }
 	             
                   return System.currentTimeMillis() - start;
                 }
          
-         private List<Route> parse(Element section) throws Exception 
-                 { List<Route> routes = new ArrayList<Route>();
-                   NodeList    nodes  = section.getElementsByTagName("route");
+         private List<Item> parse(Element section) throws Exception 
+                 { List<Item> items = new ArrayList<Item>();
+                   NodeList   nodes = section.getElementsByTagName(ITEM);
                  
                    for (int i=0; i<nodes.getLength(); i++)
                        { Element      node        = (Element) nodes.item(i);
                          NamedNodeMap attributes  = node.getAttributes();
-                         String       id          = attribute  (attributes,"id");
-                         String       name        = attribute  (attributes,"name");
-                         String       grade       = attribute  (attributes,"grade");
-                         String       stars       = attribute  (attributes,"stars");
-                         String       bolts       = attribute  (attributes,"bolts");
-                         String       order       = attribute  (attributes,"order");
+                         String       id          = attribute  (attributes,ID);
+                         String       name        = attribute  (attributes,NAME);
+                         String       grade       = attribute  (attributes,GRADE);
+                         String       stars       = attribute  (attributes,STARS);
+                         String       rated       = attribute  (attributes,RATED);
+                         String       order       = attribute  (attributes,ORDER);
                          String       description = description(node);
-                         Route        route       = new Route(id,name,grade,stars,bolts,order,description);
+                         Item         item        = new Item(id,name,grade,stars,rated,order,description);
                          Node         optional;
                          
-                         if ((optional = child(node,"first-ascent")) != null)
-                            { String       by   = attribute(optional.getAttributes(),"by");
-                              String       date = attribute(optional.getAttributes(),"date");
+                         if ((optional = child(node,ORIGINATED)) != null)
+                            { String       by   = attribute(optional.getAttributes(),BY);
+                              String       date = attribute(optional.getAttributes(),DATE);
                               
-                              route.firstAscent = new Route.FirstAscent(by,date);
+                              item.originated = new Item.Originated(by,date);
                             }
 
-                         if ((optional = child(node,"bolted")) != null)
-                            { String       by   = attribute(optional.getAttributes(),"by");
-                              String       date = attribute(optional.getAttributes(),"date");
+                         if ((optional = child(node,CHECKED)) != null)
+                            { String       by   = attribute(optional.getAttributes(),BY);
+                              String       date = attribute(optional.getAttributes(),DATE);
                                    
-                              route.bolted = new Route.Bolted(by,date);
+                              item.checked = new Item.Checked(by,date);
                             }
                          
-                         routes.add(route);
+                         items.add(item);
                        }
                    
-                   return routes;
+                   return items;
                  }
        }

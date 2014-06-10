@@ -41,7 +41,7 @@ public class TestAPI extends AndroidTestCase
 	              long root = tbxml.rootXMLElement();         
 	              
 	              assertTrue  ("Invalid 'root' element",root != 0);
-	              assertEquals("Invalid 'root' element tag","routes",tbxml.elementName(root));
+	              assertEquals("Invalid 'root' element tag","document",tbxml.elementName(root));
 	              
 	              long section = tbxml.firstChild (root);        
 	              
@@ -116,7 +116,7 @@ public class TestAPI extends AndroidTestCase
                   long description = tbxml.firstChild (item);        assertTrue("Invalid 'description' element", description != 0);
                   long created     = tbxml.nextSibling(description); assertTrue("Invalid 'created' element",     created     != 0);
                   
-                  assertEquals("Invalid 'root' element name",        "routes",      tbxml.elementName(root));
+                  assertEquals("Invalid 'root' element name",        "document",    tbxml.elementName(root));
                   assertEquals("Invalid 'section' element name",     "section",     tbxml.elementName(section));
                   assertEquals("Invalid 'item' element name",        "item",        tbxml.elementName(item));
                   assertEquals("Invalid 'description' element name", "description", tbxml.elementName(description));
@@ -137,7 +137,7 @@ public class TestAPI extends AndroidTestCase
                   assertEquals("Invalid section 'id' attribute","10005000",  tbxml.valueOfAttributeNamed("id",   section));
                   assertEquals("Invalid section 'id' attribute","Section1",  tbxml.valueOfAttributeNamed("name", section));
                   assertEquals("Invalid section 'id' attribute","5",         tbxml.valueOfAttributeNamed("order",section));
-                  assertEquals("Invalid section 'id' attribute","4B,A",      tbxml.valueOfAttributeNamed("bolts",item));
+                  assertEquals("Invalid section 'id' attribute","4B,A",      tbxml.valueOfAttributeNamed("rated",item));
                   assertEquals("Invalid section 'id' attribute","18",        tbxml.valueOfAttributeNamed("grade",item));
                   assertEquals("Invalid section 'id' attribute","1",         tbxml.valueOfAttributeNamed("id",   item));
                   assertEquals("Invalid section 'id' attribute","Item1",     tbxml.valueOfAttributeNamed("name", item));
@@ -262,16 +262,16 @@ public class TestAPI extends AndroidTestCase
                    assertNotNull("Invalid 'item' attribute list",attributes);
                    assertEquals ("Invalid 'item' attribute list size",5,attributes.length);
                    
-                   assertNotNull("Invalid 'item' 'bolts' attribute",tbxml.attributeName(attributes[0]));
-                   assertEquals ("Invalid 'item' 'bolts' attribute","bolts",tbxml.attributeName(attributes[0]));
-                   assertNotNull("Invalid 'item' 'grade' attribute",tbxml.attributeName(attributes[1]));
+                   assertNotNull("Invalid 'item' 'rated' attribute", tbxml.attributeName(attributes[0]));
+                   assertEquals ("Invalid 'item' 'rated' attribute","rated",tbxml.attributeName(attributes[0]));
+                   assertNotNull("Invalid 'item' 'grade' attribute", tbxml.attributeName(attributes[1]));
                    assertEquals ("Invalid 'item' 'grade' attribute","grade",tbxml.attributeName(attributes[1]));
-                   assertNotNull("Invalid 'item' 'id' attribute",   tbxml.attributeName(attributes[2]));
-                   assertEquals ("Invalid 'item' 'id' attribute",   "id",tbxml.attributeName(attributes[2]));
-                   assertNotNull("Invalid 'item' 'name' attribute", tbxml.attributeName(attributes[3]));
-                   assertEquals ("Invalid 'item' 'name' attribute", "name",tbxml.attributeName(attributes[3]));
-                   assertNotNull("Invalid 'item' 'stars' attribute",tbxml.attributeName(attributes[4]));
-                   assertEquals ("Invalid 'item' 'stars' attribute","stars",tbxml.attributeName(attributes[4]));
+                   assertNotNull("Invalid 'item' 'id' attribute",    tbxml.attributeName(attributes[2]));
+                   assertEquals ("Invalid 'item' 'id' attribute",    "id",tbxml.attributeName(attributes[2]));
+                   assertNotNull("Invalid 'item' 'name' attribute",  tbxml.attributeName(attributes[3]));
+                   assertEquals ("Invalid 'item' 'name' attribute",  "name",tbxml.attributeName(attributes[3]));
+                   assertNotNull("Invalid 'item' 'stars' attribute", tbxml.attributeName(attributes[4]));
+                   assertEquals ("Invalid 'item' 'stars' attribute", "stars",tbxml.attributeName(attributes[4]));
                 }
 
          public void testAttributeValue() throws Exception

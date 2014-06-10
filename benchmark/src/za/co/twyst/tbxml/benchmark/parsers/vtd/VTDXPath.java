@@ -10,11 +10,11 @@ import com.ximpleware.VTDNav;
 
 import android.util.Log;
 
-import za.co.twyst.tbxml.benchmark.db.Route;
+import za.co.twyst.tbxml.benchmark.db.Item;
 import za.co.twyst.tbxml.benchmark.db.Section;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
 
-public class VTDXPath implements Parser 
+public class VTDXPath extends Parser 
        { // CONSTANTS
     
 		 private static final String TAG = VTDXPath.class.getSimpleName();
@@ -67,49 +67,49 @@ public class VTDXPath implements Parser
                         VTDNav        navigator = vtd.getNav();
                         AutoPilot     pilot     = new AutoPilot(navigator);
                         
-                        pilot.selectXPath("/routes/section");
+                        pilot.selectXPath("/" + DOCUMENT + "/" + SECTION);
                         
                         while (pilot.evalXPath() != -1)
-                              { String      id      = attribute(navigator,"id");
-                                String      name    = attribute(navigator,"name");
-                                String      order   = attribute(navigator,"order");
-                                List<Route> routes  = parse(navigator);
-                                Section     section = new Section(id,name,order,routes);
+                              { String     id      = attribute(navigator,ID);
+                                String     name    = attribute(navigator,NAME);
+                                String     order   = attribute(navigator,ORDER);
+                                List<Item> items   = parse(navigator);
+                                Section    section = new Section(id,name,order,items);
                               
                                 sections.add(section);
                               }
 
                         for (Section section: sections)
-                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
+                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.items.size()));
                             }
                       }
 	             
                   return System.currentTimeMillis() - start;
                 }
          
-         private List<Route> parse(VTDNav navigator) throws Exception 
-                 { List<Route> routes = new ArrayList<Route>();
-                   AutoPilot   pilot  = new AutoPilot(navigator);
+         private List<Item> parse(VTDNav navigator) throws Exception 
+                 { List<Item> items = new ArrayList<Item>();
+                   AutoPilot  pilot = new AutoPilot(navigator);
                    
-                   pilot.selectXPath("route");
+                   pilot.selectXPath(ITEM);
                    
                    while(pilot.evalXPath() != -1)
-                        { String id          = attribute(navigator,"id");
-                          String name        = attribute(navigator,"name");
-                          String grade       = attribute(navigator,"grade");
-                          String stars       = attribute(navigator,"stars");
-                          String bolts       = attribute(navigator,"bolts");
-                          String order       = attribute(navigator,"order");
+                        { String id          = attribute(navigator,ID);
+                          String name        = attribute(navigator,NAME);
+                          String grade       = attribute(navigator,GRADE);
+                          String stars       = attribute(navigator,STARS);
+                          String rated       = attribute(navigator,RATED);
+                          String order       = attribute(navigator,ORDER);
                           String description = description(navigator);
-                          Route  route       = new Route(id,name,grade,stars,bolts,order,description);
+                          Item   item        = new Item(id,name,grade,stars,rated,order,description);
 
-                          firstAscent(navigator,route);
-                          boltedBy   (navigator,route);
+                          originated(navigator,item);
+                          checked   (navigator,item);
                           
-                          routes.add (route);
+                          items.add (item);
                         }
                  
-                   return routes;
+                   return items;
                  }
          
          private String description(VTDNav navigator) throws Exception 
@@ -118,7 +118,7 @@ public class VTDXPath implements Parser
                    navigator.push();
                    
                    try
-                      { pilot.selectXPath("description");
+                      { pilot.selectXPath(DESCRIPTION);
                    
                         if (pilot.evalXPath() != -1)
                            { return text(navigator);
@@ -131,33 +131,33 @@ public class VTDXPath implements Parser
                    return "";
                  }
          
-         private void firstAscent(VTDNav navigator,Route route) throws Exception 
+         private void originated(VTDNav navigator,Item item) throws Exception 
                  { AutoPilot pilot = new AutoPilot(navigator);
            
                    navigator.push();
-                   pilot.selectXPath("first-ascent");
+                   pilot.selectXPath(ORIGINATED);
 
                    if (pilot.evalXPath() != -1)
-                      { String by   = attribute(navigator,"by");
-                        String date = attribute(navigator,"date");
+                      { String by   = attribute(navigator,BY);
+                        String date = attribute(navigator,DATE);
                         
-                        route.firstAscent = new Route.FirstAscent(by,date);
+                        item.originated = new Item.Originated(by,date);
                       }
                    
                    navigator.pop();
                  }
          
-         private void boltedBy(VTDNav navigator,Route route) throws Exception 
+         private void checked(VTDNav navigator,Item item) throws Exception 
                  { AutoPilot pilot = new AutoPilot(navigator);
            
                    navigator.push();
-                   pilot.selectXPath("bolted");
+                   pilot.selectXPath(CHECKED);
 
                    if (pilot.evalXPath() != -1)
-                      { String by   = attribute(navigator,"by");
-                        String date = attribute(navigator,"date");
+                      { String by   = attribute(navigator,BY);
+                        String date = attribute(navigator,DATE);
                         
-                        route.bolted = new Route.Bolted(by,date);
+                        item.checked = new Item.Checked(by,date);
                       }
                    
                    navigator.pop();

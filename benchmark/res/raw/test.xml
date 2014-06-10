@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<routes>
+<document>
 
  <!-- COMMENT -->
 
  <section id="10005000" name="Section1" order="5">
-  <item bolts="4B,A" grade="18" id="1" name="Item1" stars="***">
+  <item rated="4B,A" grade="18" id="1" name="Item1" stars="***">
    <description>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. 
    </description>
@@ -38,4 +38,4 @@
   
  </section>
  
-</routes>
+</document>

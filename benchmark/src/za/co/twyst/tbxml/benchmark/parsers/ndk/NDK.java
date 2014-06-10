@@ -5,12 +5,12 @@ import java.util.List;
 
 import android.util.Log;
 
-import za.co.twyst.tbxml.benchmark.db.Route;
+import za.co.twyst.tbxml.benchmark.db.Item;
 import za.co.twyst.tbxml.benchmark.db.Section;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
 import za.co.twyst.tbxml.TBXML;
 
-public class NDK implements Parser 
+public class NDK extends Parser 
        { // CONSTANTS
     
          private static final String TAG = NDK.class.getSimpleName();
@@ -46,12 +46,12 @@ public class NDK implements Parser
                                   while (child != 0)
                                         { String tag = tbxml.elementName(child);
                                       
-                                          if ("section".equals(tag))
-                                             { String      id      = tbxml.valueOfAttributeNamed("id",   child);
-                                               String      name    = tbxml.valueOfAttributeNamed("name", child);
-                                               String      order   = tbxml.valueOfAttributeNamed("order",child);
-                                               List<Route> routes  = parse(tbxml,child);
-                                               Section     section = new Section(id,name,order,routes);
+                                          if (SECTION.equals(tag))
+                                             { String     id      = tbxml.valueOfAttributeNamed(ID,   child);
+                                               String     name    = tbxml.valueOfAttributeNamed(NAME, child);
+                                               String     order   = tbxml.valueOfAttributeNamed(ORDER,child);
+                                               List<Item> items   = parse(tbxml,child);
+                                               Section    section = new Section(id,name,order,items);
 
                                                sections.add(section);
                                              }
@@ -67,50 +67,49 @@ public class NDK implements Parser
                       // ... validate
                         
                       for (Section section: sections)
-                          { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
+                          { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.items.size()));
                           }
                       }
 	             
                   return System.currentTimeMillis() - start;
                 }
          
-         private List<Route> parse(TBXML tbxml,long section) throws Exception 
-                 { List<Route> routes = new ArrayList<Route>();
-                   long        child  = tbxml.firstChild(section);
+         private List<Item> parse(TBXML tbxml,long section) throws Exception 
+                 { List<Item> items = new ArrayList<Item>();
+                   long       child = tbxml.firstChild(section);
                    
                    while (child != 0)
-                         { if ("route".equals(tbxml.elementName(child)))
-                              { String id          = tbxml.valueOfAttributeNamed("id",   child);
-                                String name        = tbxml.valueOfAttributeNamed("name", child);
-                                String grade       = tbxml.valueOfAttributeNamed("grade",child);
-                                String stars       = tbxml.valueOfAttributeNamed("stars",child);
-                                String bolts       = tbxml.valueOfAttributeNamed("bolts",child);
-                                String order       = tbxml.valueOfAttributeNamed("order",child);
-                                String description = tbxml.textForElement(tbxml.childElementNamed("description",child));
-                                Route  route       = new Route(id,name,grade,stars,bolts,order,description);
+                         { if (ITEM.equals(tbxml.elementName(child)))
+                              { String id          = tbxml.valueOfAttributeNamed(ID,   child);
+                                String name        = tbxml.valueOfAttributeNamed(NAME, child);
+                                String grade       = tbxml.valueOfAttributeNamed(GRADE,child);
+                                String stars       = tbxml.valueOfAttributeNamed(STARS,child);
+                                String rated       = tbxml.valueOfAttributeNamed(RATED,child);
+                                String order       = tbxml.valueOfAttributeNamed(ORDER,child);
+                                String description = tbxml.textForElement(tbxml.childElementNamed(DESCRIPTION,child));
+                                Item   item        = new Item(id,name,grade,stars,rated,order,description);
                                 long   optional;
 
-                                if ((optional = tbxml.childElementNamed("first-ascent",child)) != 0)
-                                   { String by   = tbxml.valueOfAttributeNamed("by",  optional);
-                                     String date = tbxml.valueOfAttributeNamed("date",optional);
+                                if ((optional = tbxml.childElementNamed(ORIGINATED,child)) != 0)
+                                   { String by   = tbxml.valueOfAttributeNamed(BY,  optional);
+                                     String date = tbxml.valueOfAttributeNamed(DATE,optional);
                                 
-                                     route.firstAscent = new Route.FirstAscent(by,date);
+                                     item.originated = new Item.Originated(by,date);
                                    }
 
-                                if ((optional = tbxml.childElementNamed("bolted",child)) != 0)
-                                   { String by   = tbxml.valueOfAttributeNamed("by",  optional);
-                                     String date = tbxml.valueOfAttributeNamed("date",optional);
+                                if ((optional = tbxml.childElementNamed(CHECKED,child)) != 0)
+                                   { String by   = tbxml.valueOfAttributeNamed(BY,  optional);
+                                     String date = tbxml.valueOfAttributeNamed(DATE,optional);
                                 
-                                     route.bolted = new Route.Bolted(by,date);
+                                     item.checked = new Item.Checked(by,date);
                                    }
                                 
-//                              Log.e(TAG,"ROUTE: [id:" + id + "][name:" + name + "][grade:" + grade + "][stars:" + stars + "][bolts:" + bolts + "][order:" + order + "][description:" + description + "]");
-                                routes.add(route);
+                                items.add(item);
                               }
                          
                            child = tbxml.nextSibling(child);
                          }
 
-                   return routes;
+                   return items;
                  }
        }

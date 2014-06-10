@@ -7,25 +7,25 @@ public class Section
     
          // INSTANCE VARIABLES
     
-         public final String      id;
-         public final String      name;
-         public final String      order;
-         public final List<Route> routes;
+         public final String     id;
+         public final String     name;
+         public final String     order;
+         public final List<Item> items;
          
          // CONSTRUCTOR
          
-         public Section(String id,String name,String order,List<Route> routes)
-                { this.id     = id;
-                  this.name   = name;
-                  this.order  = order;
-                  this.routes = routes;
+         public Section(String id,String name,String order,List<Item> items)
+                { this.id    = id;
+                  this.name  = name;
+                  this.order = order;
+                  this.items = items;
                 }
 
          // INSTANCE METHODS
          
-		public void add(Route route)
-		       { if (route != null)
-		            { routes.add(route);
+		public void add(Item item)
+		       { if (item != null)
+		            { items.add(item);
 		            }
 		       }
        }

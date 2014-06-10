@@ -14,20 +14,14 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
 
-import za.co.twyst.tbxml.benchmark.db.Route;
+import za.co.twyst.tbxml.benchmark.db.Item;
 import za.co.twyst.tbxml.benchmark.db.Section;
 import za.co.twyst.tbxml.benchmark.parsers.Parser;
 
-public class SAX implements Parser 
+public class SAX extends Parser 
        { // CONSTANTS
     
-		 private static final String TAG          = SAX.class.getSimpleName();
-         private static final String ROOT         = "routes";
-         private static final String SECTION      = "section";
-         private static final String ROUTE        = "route";
-         private static final String DESCRIPTION  = "description";
-         private static final String FIRST_ASCENT = "first-ascent";
-         private static final String BOLTED       = "bolted";
+		 private static final String TAG = SAX.class.getSimpleName();
     
          // INSTANCE VARIABLES
          
@@ -56,7 +50,7 @@ public class SAX implements Parser
                         List<Section> sections = handler.sections;
 
                         for (Section section: sections)
-                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.routes.size()));
+                            { Log.d(TAG,String.format("SECTION: %s  (%d)",section.name,section.items.size()));
                             }
                       }
 	             
@@ -70,7 +64,7 @@ public class SAX implements Parser
                  { public  List<Section> sections;
                    private boolean       root;
         	       private Section       section;
-        	       private Route         route;
+        	       private Item          item;
         	       private StringBuilder description;
         	       
                    @Override
@@ -80,68 +74,68 @@ public class SAX implements Parser
         	                sections    = new ArrayList<Section>();
         	           	 	root        = false;
         	           	 	section     = null;
-        	           	 	route       = null;
+        	           	 	item        = null;
         	           	 	description = null;
         	              }
 
                    @Override
                    public void startElement(String uri,String localName,String qname,Attributes attributes) throws SAXException 
-                          { if (localName.equalsIgnoreCase(ROOT))
+                          { if (localName.equalsIgnoreCase(DOCUMENT))
         	                   { this.root        = true;
         	                     this.section     = null;
-        	                     this.route       = null;
+        	                     this.item       = null;
              	           	 	 this.description = null;
         	                     
         	                     return;
         	                   } 
                 	        
         	                if (root && localName.equalsIgnoreCase(SECTION))
-        	                   { String      id      = attributes.getValue("id");
-                                 String      name    = attributes.getValue("name");
-                                 String      order   = attributes.getValue("order");
-                                 List<Route> routes  = new ArrayList<Route>();
+        	                   { String     id    = attributes.getValue(ID);
+                                 String     name  = attributes.getValue(NAME);
+                                 String     order = attributes.getValue(ORDER);
+                                 List<Item> items = new ArrayList<Item>();
                                  
-                                 this.section = new Section(id,name,order,routes);
+                                 this.section = new Section(id,name,order,items);
         	                     return;
         	                   } 
                 	        
-        	                if ((section != null) && localName.equalsIgnoreCase(ROUTE))
-        	                   { String id    = attributes.getValue("id");
-                                 String name  = attributes.getValue("name");
-                                 String grade = attributes.getValue("grade");
-                                 String stars = attributes.getValue("stars");
-                                 String bolts = attributes.getValue("bolts");
-                                 String order = attributes.getValue("order");
+        	                if ((section != null) && localName.equalsIgnoreCase(ITEM))
+        	                   { String id    = attributes.getValue(ID);
+                                 String name  = attributes.getValue(NAME);
+                                 String grade = attributes.getValue(GRADE);
+                                 String stars = attributes.getValue(STARS);
+                                 String rated = attributes.getValue(RATED);
+                                 String order = attributes.getValue(ORDER);
                                  
-                                 this.route = new Route(id,name,grade,stars,bolts,order,"");
+                                 this.item = new Item(id,name,grade,stars,rated,order,"");
         	                     return;
         	                   } 
                 	        
-        	                if ((route != null) && localName.equalsIgnoreCase(DESCRIPTION))
+        	                if ((item != null) && localName.equalsIgnoreCase(DESCRIPTION))
         	                   { this.description = new StringBuilder();
         	                     return;
         	                   } 
                 	        
-        	                if ((route != null) && localName.equalsIgnoreCase(FIRST_ASCENT))
-        	                   { String date = attributes.getValue("date");
-                                 String by   = attributes.getValue("by");
+        	                if ((item != null) && localName.equalsIgnoreCase(ORIGINATED))
+        	                   { String date = attributes.getValue(DATE);
+                                 String by   = attributes.getValue(BY);
                                
-                                 route.firstAscent = new Route.FirstAscent(date,by);
+                                 item.originated = new Item.Originated(date,by);
         	                     return;
         	                   } 
                 	        
-        	                if ((route != null) && localName.equalsIgnoreCase(BOLTED))
-        	                   { String date = attributes.getValue("date");
-                                 String by   = attributes.getValue("by");
+        	                if ((item != null) && localName.equalsIgnoreCase(CHECKED))
+        	                   { String date = attributes.getValue(DATE);
+                                 String by   = attributes.getValue(BY);
                                
-                                 route.bolted = new Route.Bolted(date,by);
+                                 item.checked = new Item.Checked(date,by);
         	                     return;
         	                   } 
                           }
 
                    @Override
                    public void endElement(String uri,String localName,String name) throws SAXException 
-        	              { if (localName.equalsIgnoreCase(ROOT))
+        	              { if (localName.equalsIgnoreCase(DOCUMENT))
         	                   { root = false;
         	                     return;
         	                   }
@@ -152,14 +146,14 @@ public class SAX implements Parser
         	                     return;
         	                   } 
         	                
-        	                if ((this.section != null) && (this.route != null) && localName.equalsIgnoreCase(ROUTE))
-        	                   { this.section.add(route);
-        	                	 this.route = null;
+        	                if ((this.section != null) && (this.item != null) && localName.equalsIgnoreCase(ITEM))
+        	                   { this.section.add(item);
+        	                	 this.item = null;
         	                     return;
         	                   } 
         	                
-        	                if ((this.route != null) && (this.description != null) && localName.equalsIgnoreCase(ROUTE))
-        	                   { this.route.description = description.toString();
+        	                if ((this.item != null) && (this.description != null) && localName.equalsIgnoreCase(ITEM))
+        	                   { this.item.description = description.toString();
         	                	 this.description = null;
         	                     return;
         	                   } 
