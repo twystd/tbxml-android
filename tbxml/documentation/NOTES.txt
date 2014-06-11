@@ -9,3 +9,4 @@ NOTES
 5. http://vtd-xml.sourceforge.net/
 6. http://fahdshariff.blogspot.de/2010/08/faster-xpaths-with-vtd-xml.html
 7. https://steveliles.github.io/xml_parsing_in_android.html
+8. https://groups.google.com/forum/#!topic/android-developers/A_nF_HQC7N8
