@@ -8,3 +8,4 @@ NOTES
 4. https://stackoverflow.com/questions/17704235/android-xpath-evaluate-very-slow
 5. http://vtd-xml.sourceforge.net/
 6. http://fahdshariff.blogspot.de/2010/08/faster-xpaths-with-vtd-xml.html
+7. https://steveliles.github.io/xml_parsing_in_android.html
