@@ -10,3 +10,4 @@ NOTES
 6. http://fahdshariff.blogspot.de/2010/08/faster-xpaths-with-vtd-xml.html
 7. https://steveliles.github.io/xml_parsing_in_android.html
 8. https://groups.google.com/forum/#!topic/android-developers/A_nF_HQC7N8
+9. http://dublintech.blogspot.com/2011/12/jaxb-sax-dom-performance.html
