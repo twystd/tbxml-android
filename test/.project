@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>TBXML - dummy</name>
+	<name>TBXML - test</name>
 	<comment></comment>
 	<projects>
+		<project>TBXML - benchmark</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
