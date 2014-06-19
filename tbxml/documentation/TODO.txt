@@ -1,5 +1,0 @@
-TODO
-====
-
-1. wildcard query
-2. VTD-XML      
