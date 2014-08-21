@@ -1,5 +1,6 @@
+.DS_Store
 bin
 gen
 obj
-.DS_Store
+android-support-v7-appcompat
 tbxml/.settings/org.eclipse.jdt.ui.prefs

@@ -23,10 +23,12 @@ public class TestAPI extends AndroidTestCase
 
 	     // SETUP/TEARDOWN
 
+	     @Override
 	     protected void setUp() throws Exception 
 	               { tbxml = new TBXML();
 	               }
 
+	     @Override
 	     protected void tearDown() throws Exception 
 	               { tbxml.release();
 	               }

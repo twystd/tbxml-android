@@ -196,9 +196,9 @@ public class Grid extends FrameLayout
 
 	 	                  // ... re-measure column labels
 	 	                  
-	 	                  int rowHeight = h/values.length;
+	 	                  int rowHeight = values.length == 0 ? 0 : h/values.length;
 	 	                  int gridWidth = (width - getPaddingLeft() - getPaddingRight() - insetx);
-	 	                  int colwidth  = (gridWidth - (columns - 1)*horizontalSpacing)/columns;
+	 	                  int colwidth  = columns == 0 ? 0 : (gridWidth - (columns - 1)*horizontalSpacing)/columns;
 	 	                  
 	 	                  for (View label: columnLabels)
 	                          { label.measure(MeasureSpec.makeMeasureSpec(colwidth,                 MeasureSpec.EXACTLY),
