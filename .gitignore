@@ -2,5 +2,7 @@
 bin
 gen
 obj
+dist
 android-support-v7-appcompat
 tbxml/.settings/org.eclipse.jdt.ui.prefs
+tbxml/local.properties

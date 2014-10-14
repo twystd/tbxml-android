@@ -2,12 +2,18 @@
 
 <project name="TBXML" default="build" basedir=".">
 
-<property name="ndk.dir" value="${user.home}/Development/tools/adt-bundle-mac-x86_64-20130522/android-ndk-r9c" />
-	
-<target name="build">
- <exec executable="${ndk.dir}/ndk-build" dir="${basedir}/jni" failonerror="true"/>
-</target>
+ <!-- PROPERTIES -->
+ 
+ <property file="local.properties"/>
+ 
+ <!-- NATIVE LIBRARY: BUILD -->
 
+ <target name="build">
+  <exec executable="${ndk.dir}/ndk-build" dir="${basedir}/jni" failonerror="true"/>
+ </target>
+
+ <!-- NATIVE LIBRARY: CLEAN -->
+ 
  <target name="clean">
   <exec executable="${ndk.dir}/ndk-build" dir="${basedir}/jni" failonerror="true" >
    <arg value="clean"/>
