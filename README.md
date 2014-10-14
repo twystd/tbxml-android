@@ -1,4 +1,4 @@
-tbxml-android: version 0.5
+tbxml-android: version 1.00.0
 
 # TBXML - Android NDK port
 
