@@ -42,9 +42,13 @@ References
 1. [Original TBXML project][tbxml]
 2. [TBXML github project][github]
 3. [VTD-XML][vtd]
+4. [XPath.evaluate performance slows down (absurdly) over multiple calls][stackoverflow1]
+5. [Fastest XML parser for small, simple documents in Java][stackoverflow2]
 
-[71Squared]: http://www.71squared.com
-[tbxml]:     http://www.tbxml.co.uk/TBXML/TBXML_Free.html
-[github]:    https://github.com/71squared/TBXML
-[vtd]:       http://vtd-xml.sourceforge.net
+[71Squared]:      http://www.71squared.com
+[tbxml]:          http://www.tbxml.co.uk/TBXML/TBXML_Free.html
+[github]:         https://github.com/71squared/TBXML
+[vtd]:            http://vtd-xml.sourceforge.net
+[stackoverflow1]: http://stackoverflow.com/questions/3782618/xpath-evaluate-performance-slows-down-absurdly-over-multiple-calls
+[stackoverflow2]: http://stackoverflow.com/questions/530064/fastest-xml-parser-for-small-simple-documents-in-java
 
